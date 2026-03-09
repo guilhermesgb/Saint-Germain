@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saint Germain — Solicitações de Estoque</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111318;
+    --surface2: #181c22;
+    --border: #1e242e;
+    --accent: #c8a45a;
+    --accent2: #7eb8f0;
+    --green: #4caf82;
+    --red: #e05c5c;
+    --orange: #e0945c;
+    --yellow: #d4c25a;
+    --muted: #4a5568;
+    --text: #e8eaf0;
+    --text2: #8899aa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #0d1117 0%, #111822 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left { display: flex; align-items: baseline; gap: 16px; }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-shadow: 0 0 30px rgba(200,164,90,0.3);
+  }
+
+  .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .filters-bar {
+    padding: 14px 32px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0a0c0f; font-weight: 600; }
+
+  .search-box {
+    margin-left: auto;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    width: 220px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-box::placeholder { color: var(--muted); }
+  .search-box:focus { border-color: var(--accent2); }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kpi-card {
+    background: var(--surface);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--kpi-color, var(--accent));
+  }
+
+  .kpi-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text2);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--kpi-color, var(--text));
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .kpi-sub {
+    font-size: 10px;
+    color: var(--text2);
+    margin-top: 4px;
+  }
+
+  .main-content {
+    padding: 24px 32px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: var(--text2);
+    text-transform: uppercase;
+  }
+
+  .section-count {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .group-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 10px;
+    padding: 8px 14px;
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .group-divider-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+
+  .group-divider-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text2);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  thead th {
+    background: var(--surface2);
+    padding: 9px 12px;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+  thead th:hover { color: var(--accent); }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  tbody td {
+    padding: 9px 12px;
+    color: var(--text);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .td-num {
+    font-family: 'DM Mono', monospace;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  .td-fornecedor {
+    font-weight: 500;
+    color: var(--accent2);
+  }
+
+  .td-obs {
+    max-width: 220px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text2);
+    font-size: 11px;
+  }
+
+  .td-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  .td-qty {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    text-align: right;
+    color: var(--text);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+  .badge-concluido { background: rgba(76,175,130,0.12); color: var(--green); border: 1px solid rgba(76,175,130,0.25); }
+  .badge-porto { background: rgba(126,184,240,0.12); color: var(--accent2); border: 1px solid rgba(126,184,240,0.25); }
+  .badge-andamento { background: rgba(224,148,92,0.12); color: var(--orange); border: 1px solid rgba(224,148,92,0.25); }
+  .badge-falta { background: rgba(224,92,92,0.12); color: var(--red); border: 1px solid rgba(224,92,92,0.25); }
+  .badge-empty { background: rgba(74,85,104,0.12); color: var(--muted); border: 1px solid rgba(74,85,104,0.25); }
+
+  .badge-rel-fin { background: rgba(76,175,130,0.12); color: var(--green); border: 1px solid rgba(76,175,130,0.25); }
+  .badge-rel-env { background: rgba(126,184,240,0.12); color: var(--accent2); border: 1px solid rgba(126,184,240,0.25); }
+  .badge-rel-sol { background: rgba(212,194,90,0.12); color: var(--yellow); border: 1px solid rgba(212,194,90,0.25); }
+  .badge-rel-ant { background: rgba(74,85,104,0.2); color: var(--muted); border: 1px solid rgba(74,85,104,0.3); }
+
+  .badge-sim { background: rgba(200,164,90,0.12); color: var(--accent); border: 1px solid rgba(200,164,90,0.25); }
+
+  .row-hidden { display: none !important; }
+
+  .prontidao-recebido { color: var(--green); font-weight: 500; }
+  .prontidao-porto { color: var(--accent2); font-weight: 500; }
+  .prontidao-embarcada { color: var(--accent); font-weight: 500; }
+  .prontidao-data { color: var(--text2); }
+  .prontidao-vazio { color: var(--muted); }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(3,1fr); }
+    .header { padding: 14px 16px; }
+    .main-content { padding: 16px; }
+    .filters-bar { padding: 10px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo">SAINT GERMAIN</div>
+    <div class="subtitle">Solicitações de Estoque · Premier Trade</div>
+  </div>
+  <div class="header-right">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      Dashboard Ativo
+    </div>
+  </div>
+</header>
+
+<div class="kpi-grid" id="kpiGrid">
+  <div class="kpi-card" style="--kpi-color: var(--text)">
+    <div class="kpi-label">Total Processos</div>
+    <div class="kpi-value" id="kpiTotal">—</div>
+    <div class="kpi-sub">registros ativos</div>
+  </div>
+  <div class="kpi-card" style="--kpi-color: var(--green)">
+    <div class="kpi-label">Concluídos</div>
+    <div class="kpi-value" id="kpiConcluido">—</div>
+    <div class="kpi-sub">coletados</div>
+  </div>
+  <div class="kpi-card" style="--kpi-color: var(--accent2)">
+    <div class="kpi-label">No Porto</div>
+    <div class="kpi-value" id="kpiPorto">—</div>
+    <div class="kpi-sub">aguardando desembaraço</div>
+  </div>
+  <div class="kpi-card" style="--kpi-color: var(--orange)">
+    <div class="kpi-label">Em Andamento</div>
+    <div class="kpi-value" id="kpiAndamento">—</div>
+    <div class="kpi-sub">em trânsito / embarque</div>
+  </div>
+  <div class="kpi-card" style="--kpi-color: var(--red)">
+    <div class="kpi-label">Faltam Coletar</div>
+    <div class="kpi-value" id="kpiFalta">—</div>
+    <div class="kpi-sub">não coletados</div>
+  </div>
+  <div class="kpi-card" style="--kpi-color: var(--accent)">
+    <div class="kpi-label">Total de Peças</div>
+    <div class="kpi-value" id="kpiPecas" style="font-size:22px">—</div>
+    <div class="kpi-sub">unidades (coletadas)</div>
+  </div>
+</div>
+
+<div class="filters-bar">
+  <span class="filter-label">Status:</span>
+  <button class="filter-btn active" data-filter="all">Todos</button>
+  <button class="filter-btn" data-filter="Concluído">Concluído</button>
+  <button class="filter-btn" data-filter="No Porto">No Porto</button>
+  <button class="filter-btn" data-filter="Em andamento">Em andamento</button>
+  <button class="filter-btn" data-filter="falta">Faltam Coletar</button>
+
+  <span class="filter-label" style="margin-left:16px">Fornecedor:</span>
+  <select id="fornecedorFilter" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:4px;font-family:'DM Mono',monospace;font-size:11px;outline:none;cursor:pointer;">
+    <option value="">Todos</option>
+  </select>
+
+  <input type="text" class="search-box" id="searchBox" placeholder="🔍  Buscar processo, fornecedor...">
+</div>
+
+<div class="main-content">
+
+  <div class="group-divider" id="headerColetadas">
+    <div class="group-divider-label">✔ Coletadas</div>
+    <div class="group-divider-count" id="countColetadas"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="tabelaColetadas">
+      <thead>
+        <tr>
+          <th>Fornecedor</th>
+          <th>Solicitação</th>
+          <th>Númerário</th>
+          <th style="text-align:right">Qtd Peças</th>
+          <th>Observações</th>
+          <th>Amostras</th>
+          <th>Prontidão</th>
+          <th>Embarque</th>
+          <th>Chegada</th>
+          <th>Conclusão</th>
+          <th>Rel. Defeito</th>
+          <th>Embarque Def.</th>
+          <th>Prev. Defeitos</th>
+          <th>Def. Concluído</th>
+        </tr>
+      </thead>
+      <tbody id="bodyColetadas"></tbody>
+    </table>
+  </div>
+
+  <div class="group-divider" id="headerFalta" style="--accent: var(--red); border-left-color: var(--red); margin-top: 28px;">
+    <div class="group-divider-label" style="color: var(--red)">⚠ Faltam Coletar</div>
+    <div class="group-divider-count" id="countFalta"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table id="tabelaFalta">
+      <thead>
+        <tr>
+          <th>Fornecedor</th>
+          <th>Solicitação</th>
+          <th>Númerário</th>
+          <th style="text-align:right">Qtd Peças</th>
+          <th>Observações</th>
+          <th>Amostras</th>
+          <th>Prontidão Inf.</th>
+          <th>Conclusão</th>
+          <th>Rel. Defeito</th>
+        </tr>
+      </thead>
+      <tbody id="bodyFalta"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+const coletadas = [
+  {f:"Alice",   sol:"19/11/2024", num:"SG.060/24", qty:1200,   obs:"Estojos",                                        am:"-",   pront:"Recebido",  emb:"20/01/2025", cheg:"26/02/2025", conc:"Concluído",    rel:"Antigo",     embdef:"-",        prevdef:"-",         defconc:"-"},
+  {f:"Emi",     sol:"04/12/2024", num:"SG.062/24", qty:2000,   obs:"Flower box",                                     am:"-",   pront:"Recebido",  emb:"28/01/2025", cheg:"26/02/2025", conc:"Concluído",    rel:"Finalizado", embdef:"SG.039A",  prevdef:"07/06/2025",defconc:"Concluído"},
+  {f:"Emi",     sol:"26/07/2024", num:"SG.038/24", qty:17260,  obs:"New Jewerly",                                    am:"-",   pront:"Recebido",  emb:"28/01/2025", cheg:"26/02/2025", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Emi",     sol:"14/08/2024", num:"SG.039/24", qty:29400,  obs:"Invoice Corretiva (60.680pcs)",                  am:"-",   pront:"Recebido",  emb:"28/01/2025", cheg:"26/02/2025", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Emi",     sol:"28/08/2024", num:"SG.042/24", qty:16400,  obs:"Men Jewerly",                                    am:"-",   pront:"Recebido",  emb:"28/01/2025", cheg:"26/02/2025", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Angela",  sol:"07/10/2024", num:"SG.048/24", qty:300,    obs:"Display's para Relógios",                        am:"-",   pront:"Recebido",  emb:"30/01/2025", cheg:"10/03/2025", conc:"Concluído",    rel:"Antigo",     embdef:"-",        prevdef:"-",         defconc:"-"},
+  {f:"Aurora",  sol:"24/10/2024", num:"SG.055/24", qty:6150,   obs:"Xiamen Honsise Industrial",                      am:"-",   pront:"Recebido",  emb:"30/01/2025", cheg:"10/03/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.072",   prevdef:"05/02/2026",defconc:"Concluído"},
+  {f:"Emi",     sol:"14/08/2024", num:"SG.039/24", qty:24474,  obs:"Invoice Corretiva (60.680pcs) - Falta 7k rel.",  am:"-",   pront:"Recebido",  emb:"09/02/2025", cheg:"18/03/2025", conc:"Concluído",    rel:"Finalizado", embdef:"SG.073B",  prevdef:"21/11/2025",defconc:"Concluído"},
+  {f:"Lokesh",  sol:"28/10/2024", num:"SG.056/24", qty:3500,   obs:"BLM International Limited",                      am:"-",   pront:"Recebido",  emb:"09/02/2025", cheg:"22/03/2025", conc:"Concluído",    rel:"Finalizado", embdef:"SG.070/71",prevdef:"15/11/2025",defconc:"Concluído"},
+  {f:"Yuki",    sol:"18/10/2024", num:"SG.052/24", qty:14500,  obs:"Shenzhen Axgero Watch Co., Ltd",                 am:"-",   pront:"Recebido",  emb:"19/02/2025", cheg:"24/03/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.096",   prevdef:"01/05/2026",defconc:"Em andamento"},
+  {f:"Jerry",   sol:"06/12/2024", num:"SG.063/24", qty:20000,  obs:"Óculos de sol - jerry",                          am:"-",   pront:"Recebido",  emb:"14/02/2025", cheg:"28/03/2025", conc:"Concluído",    rel:"Finalizado", embdef:"SG.064",   prevdef:"22/06/2025",defconc:"Concluído"},
+  {f:"Ricky",   sol:"22/11/2024", num:"SG.061/24", qty:9600,   obs:"-",                                              am:"-",   pront:"Recebido",  emb:"01/04/2025", cheg:"14/05/2025", conc:"Concluído",    rel:"Antigo",     embdef:"-",        prevdef:"-",         defconc:"-"},
+  {f:"Ivy/Sel", sol:"18/10/2024", num:"SG.051/24", qty:7150,   obs:"GuangZhou Shisuo Limited",                       am:"-",   pront:"Recebido",  emb:"15/04/2025", cheg:"19/05/2025", conc:"Concluído",    rel:"Enviado",    embdef:"-",        prevdef:"-",         defconc:"Em andamento"},
+  {f:"Jorlin",  sol:"24/10/2024", num:"SG.054/24", qty:8150,   obs:"Yong Hong Watch and Clock Company",              am:"-",   pront:"Recebido",  emb:"28/04/2025", cheg:"01/06/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.092",   prevdef:"28/02/2026",defconc:"Em andamento"},
+  {f:"Emi",     sol:"18/11/2024", num:"SG.059/24", qty:4800,   obs:"Pedido novo joias - Signos",                     am:"-",   pront:"Recebido",  emb:"03/05/2025", cheg:"14/06/2025", conc:"Concluído",    rel:"Enviado",    embdef:"-",        prevdef:"-",         defconc:"Em andamento"},
+  {f:"Yuki",    sol:"20/02/2025", num:"SG.066/25", qty:20500,  obs:"AX002",                                          am:"-",   pront:"Recebido",  emb:"05/05/2025", cheg:"14/06/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.096",   prevdef:"01/05/2026",defconc:"Em andamento"},
+  {f:"Claire",  sol:"18/10/2024", num:"SG.050/24", qty:8250,   obs:"Yavis Group Co Limited",                         am:"-",   pront:"Recebido",  emb:"10/05/2025", cheg:"13/06/2025", conc:"Concluído",    rel:"Antigo",     embdef:"-",        prevdef:"-",         defconc:"-"},
+  {f:"Jerry",   sol:"13/02/2025", num:"SG.064/25", qty:20685,  obs:"Modelos Clássicos + Capri + Siena (Inv. 005)",   am:"-",   pront:"Recebido",  emb:"22/05/2025", cheg:"24/06/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.099",   prevdef:"30/03/2026",defconc:"Em andamento"},
+  {f:"Yuki",    sol:"20/02/2025", num:"SG.067/25", qty:22050,  obs:"AX004",                                          am:"-",   pront:"Recebido",  emb:"24/05/2025", cheg:"27/06/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.096",   prevdef:"01/05/2026",defconc:"Em andamento"},
+  {f:"Jerry",   sol:"03/09/2024", num:"SG.044/24", qty:9350,   obs:"New Models Sunglasses (31.500pcs)",              am:"-",   pront:"Recebido",  emb:"17/06/2025", cheg:"25/07/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.099",   prevdef:"30/03/2026",defconc:"Em andamento"},
+  {f:"Emi",     sol:"30/09/2024", num:"SG.047/24", qty:31226,  obs:"Segunda metade (66.820pcs)",                     am:"-",   pront:"Recebido",  emb:"23/06/2025", cheg:"26/07/2025", conc:"Concluído",    rel:"Enviado",    embdef:"FedEx",    prevdef:"30/03/2026",defconc:"Em andamento"},
+  {f:"Yuki",    sol:"20/02/2025", num:"SG.067A/25",qty:18300,  obs:"AX005",                                          am:"-",   pront:"Recebido",  emb:"24/06/2025", cheg:"05/08/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.096",   prevdef:"01/05/2026",defconc:"Em andamento"},
+  {f:"Yuki",    sol:"25/02/2025", num:"SG.068/25", qty:9500,   obs:"AX007 e AX003",                                  am:"-",   pront:"Recebido",  emb:"10/07/2025", cheg:"11/08/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.096",   prevdef:"01/05/2026",defconc:"Em andamento"},
+  {f:"Jerry",   sol:"13/02/2025", num:"SG.074/25", qty:22200,  obs:"Invoice 010 - Aéreo",                            am:"-",   pront:"Recebido",  emb:"03/09/2025", cheg:"12/09/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.099",   prevdef:"30/03/2026",defconc:"Em andamento"},
+  {f:"Emi",     sol:"18/11/2024", num:"SG.057/24", qty:11100,  obs:"Pedido de modelos novos relógios",               am:"-",   pront:"Recebido",  emb:"11/08/2025", cheg:"21/09/2025", conc:"Concluído",    rel:"Enviado",    embdef:"FedEx",    prevdef:"30/03/2026",defconc:"Em andamento"},
+  {f:"Jerry",   sol:"05/08/2025", num:"SG.075/25", qty:30000,  obs:"Invoice 011 - Aéreo",                            am:"-",   pront:"Recebido",  emb:"25/09/2025", cheg:"05/10/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.099",   prevdef:"30/03/2026",defconc:"Em andamento"},
+  {f:"Aurora",  sol:"04/06/2025", num:"SG.072/25", qty:26000,  obs:"HSW001650",                                      am:"-",   pront:"Recebido",  emb:"25/08/2025", cheg:"18/10/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.077",   prevdef:"14/11/2026",defconc:"Em andamento"},
+  {f:"Aurora",  sol:"08/08/2025", num:"SG.077/25", qty:16500,  obs:"Invoice Aurora - 16.500pcs / HSW001651",         am:"-",   pront:"Recebido",  emb:"01/11/2025", cheg:"14/11/2025", conc:"Concluído",    rel:"Enviado",    embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jerry",   sol:"28/08/2025", num:"SG.079/25", qty:20400,  obs:"Invoice Sunglasses 012",                         am:"-",   pront:"Recebido",  emb:"03/11/2025", cheg:"14/11/2025", conc:"Concluído",    rel:"Solicitado", embdef:"",         prevdef:"",          defconc:""},
+  {f:"Yuki",    sol:"04/06/2025", num:"SG.070/25", qty:11000,  obs:"AX006 - 7.200 relógios e 3.800 braceletes",      am:"-",   pront:"Recebido",  emb:"28/09/2025", cheg:"15/11/2025", conc:"Concluído",    rel:"Enviado",    embdef:"SG.096",   prevdef:"01/05/2026",defconc:"Em andamento"},
+  {f:"Emi",     sol:"04/06/2025", num:"SG.073B/25",qty:10600,  obs:"Processo SG.073 Aéreo",                          am:"-",   pront:"Recebido",  emb:"07/11/2025", cheg:"17/11/2025", conc:"Concluído",    rel:"Enviado",    embdef:"FedEx",    prevdef:"30/03/2026",defconc:"Em andamento"},
+  {f:"Yuki",    sol:"25/09/2025", num:"SG.082A/25",qty:7000,   obs:"AX011 - Aéreo",                                  am:"-",   pront:"Recebido",  emb:"16/11/2025", cheg:"24/11/2025", conc:"Concluído",    rel:"Finalizado", embdef:"-",        prevdef:"-",         defconc:"Concluído"},
+  {f:"Aurora",  sol:"29/09/2025", num:"SG.086A/25",qty:15000,  obs:"INVOICE NO: HSW001681",                          am:"-",   pront:"Recebido",  emb:"24/11/2025", cheg:"28/11/2025", conc:"Concluído",    rel:"Solicitado", embdef:"",         prevdef:"",          defconc:"Em andamento"},
+  {f:"Yuki",    sol:"08/08/2025", num:"SG.078/25", qty:13500,  obs:"AX010",                                          am:"-",   pront:"Recebido",  emb:"02/11/2025", cheg:"06/12/2025", conc:"Concluído",    rel:"Solicitado", embdef:"",         prevdef:"",          defconc:"Em andamento"},
+  {f:"Emi",     sol:"04/06/2025", num:"SG.073A/25",qty:9400,   obs:"Processo SG.073 Marítimo",                       am:"-",   pront:"Recebido",  emb:"02/11/2025", cheg:"07/12/2025", conc:"Concluído",    rel:"Solicitado", embdef:"",         prevdef:"",          defconc:"Em andamento"},
+  {f:"Jerry",   sol:"26/09/2025", num:"SG.084/25", qty:50000,  obs:"Invoice Sunglasses 013",                         am:"-",   pront:"Recebido",  emb:"28/11/2025", cheg:"15/12/2025", conc:"Concluído",    rel:"Solicitado", embdef:"",         prevdef:"",          defconc:"Em andamento"},
+  {f:"Yuki",    sol:"25/09/2025", num:"SG.082/25", qty:19000,  obs:"PI 25035 / AX011 - Marítimo",                    am:"-",   pront:"Recebido",  emb:"30/11/2025", cheg:"31/12/2025", conc:"Concluído",    rel:"Solicitado", embdef:"",         prevdef:"",          defconc:"Em andamento"},
+  {f:"Yuki",    sol:"30/10/2025", num:"SG.089/25", qty:11800,  obs:"AX012 e AX013 - Aéreo",                          am:"-",   pront:"Recebido",  emb:"16/01/2026", cheg:"22/01/2026", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jerry",   sol:"26/09/2025", num:"SG.085/25", qty:18000,  obs:"Invoice Sunglasses 014 e 015 - Aéreo",           am:"-",   pront:"Recebido",  emb:"23/01/2026", cheg:"30/01/2026", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Aurora",  sol:"29/09/2025", num:"SG.086/25", qty:15000,  obs:"INVOICE NO: HSW001681",                          am:"-",   pront:"Recebido",  emb:"20/12/2025", cheg:"31/01/2026", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Emi",     sol:"08/08/2025", num:"SG.076/25", qty:19800,  obs:"Invoice Emi - 19.800pcs",                        am:"-",   pront:"Recebido",  emb:"31/12/2025", cheg:"08/02/2026", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Yuki",    sol:"25/09/2025", num:"SG.083/25", qty:10000,  obs:"PI 25036 - Invoice Sunglasses 001 Yuki",         am:"-",   pront:"Recebido",  emb:"30/12/2025", cheg:"10/02/2026", conc:"Concluído",    rel:"Enviado",    embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jorlin",  sol:"10/09/2025", num:"SG.080/25", qty:20960,  obs:"Invoice J20250908",                              am:"-",   pront:"Recebido",  emb:"31/12/2026", cheg:"11/02/2026", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jorlin",  sol:"06/10/2025", num:"SG.087/25", qty:10200,  obs:"Invoice Braceletes",                             am:"-",   pront:"Recebido",  emb:"31/12/2026", cheg:"11/02/2026", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Yuki",    sol:"08/12/2025", num:"SG.094A/25",qty:10300,  obs:"PI 25057 - Invoice Sunglasses 002 Yuki (Aéreo)", am:"-",   pront:"Recebido",  emb:"03/02/2026", cheg:"20/02/2026", conc:"Concluído",    rel:"Enviado",    embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jorlin",  sol:"05/12/2025", num:"SG.092A/25",qty:14900,  obs:"Invoice J20251205 (Aéreo) + 17.000pcs veludo",   am:"-",   pront:"Recebido",  emb:"09/02/2026", cheg:"18/02/2026", conc:"Concluído",    rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jerry",   sol:"08/12/2025", num:"SG.099A/25",qty:41557,  obs:"Invoice Sunglasses 017 (AÉREO)",                 am:"SIM", pront:"Porto",     emb:"18/02/2026", cheg:"04/03/2026", conc:"No Porto",     rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Yuki",    sol:"30/10/2025", num:"SG.089/25", qty:28600,  obs:"AX012 e AX013 - Marítimo",                       am:"-",   pront:"Porto",     emb:"25/01/2026", cheg:"05/03/2026", conc:"No Porto",     rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jerry",   sol:"26/09/2025", num:"SG.085/25", qty:45024,  obs:"Invoice Sunglasses 014 e 015 - Marítimo",        am:"SIM", pront:"Embarcada", emb:"28/01/2026", cheg:"12/03/2026", conc:"Em andamento", rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jerry",   sol:"08/12/2025", num:"SG.095/25", qty:105600, obs:"Invoice Sunglasses 016",                         am:"SIM", pront:"Embarcada", emb:"23/02/2026", cheg:"31/03/2026", conc:"Em andamento", rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Yuki",    sol:"27/11/2025", num:"SG.091/25", qty:10200,  obs:"AX014 - Coleção Nova",                           am:"SIM", pront:"Embarcada", emb:"23/02/2026", cheg:"30/03/2026", conc:"Em andamento", rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Yuki",    sol:"23/12/2025", num:"SG.098A/25",qty:57000,  obs:"AX017",                                          am:"-",   pront:"Embarcada", emb:"23/02/2026", cheg:"31/03/2026", conc:"Em andamento", rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Yuki",    sol:"08/12/2025", num:"SG.094/25", qty:20100,  obs:"PI 25057 - Invoice Sunglasses 002 Yuki (Mar.)",  am:"-",   pront:"Embarcada", emb:"12/02/2026", cheg:"01/04/2026", conc:"Em andamento", rel:"",           embdef:"",         prevdef:"",          defconc:""},
+  {f:"Jorlin",  sol:"27/10/2025", num:"SG.088/25", qty:19650,  obs:"Invoice 20251027 (Semijóias Lançamentos)",       am:"SIM", pront:"Embarcada", emb:"26/02/2026", cheg:"15/04/2026", conc:"Em andamento", rel:"",           embdef:"",         prevdef:"",          defconc:""},
+];
+
+const faltam = [
+  {f:"Jorlin",  sol:"27/10/2025", num:"SG.088/25", qty:11850,  obs:"Invoice 20251027 (Semijóias Lançamentos)",  am:"SIM", pront:"",          conc:"Em andamento", rel:""},
+  {f:"Jerry",   sol:"08/12/2025", num:"SG.099/25", qty:8443,   obs:"Invoice Sunglasses 017 (SALDO APÓS CNY)",   am:"SIM", pront:"09/02/2026",conc:"Em andamento", rel:""},
+  {f:"Yuki",    sol:"23/12/2025", num:"SG.098/25", qty:17000,  obs:"Saldo AX017 - Envio após CNY",              am:"-",   pront:"12/03/2026",conc:"",             rel:""},
+  {f:"Jerry",   sol:"04/03/2026", num:"SG.101/26", qty:5000,   obs:"Invoice Sunglasses 019 - Modelo TikTok",    am:"-",   pront:"19/03/2026",conc:"",             rel:""},
+  {f:"Yuki",    sol:"23/12/2025", num:"SG.096/25", qty:11500,  obs:"AX016",                                     am:"SIM", pront:"01/04/2026",conc:"",             rel:""},
+  {f:"Yuki",    sol:"23/12/2025", num:"SG.097/25", qty:22800,  obs:"AX018",                                     am:"SIM", pront:"15/04/2026",conc:"",             rel:""},
+  {f:"Yuki",    sol:"02/03/2026", num:"SG.100/26", qty:83000,  obs:"AX019",                                     am:"-",   pront:"",          conc:"",             rel:""},
+  {f:"Jerry",   sol:"06/03/2026", num:"SG.102/26", qty:158400, obs:"Invoice Sunglasses 018",                    am:"-",   pront:"",          conc:"",             rel:""},
+  {f:"Yuki",    sol:"06/03/2026", num:"SG.103/26", qty:115900, obs:"Sunglasses 003 (Yuki)",                     am:"-",   pront:"",          conc:"",             rel:""},
+];
+
+function statusBadge(val) {
+  if (!val || val === '-' || val === '') return `<span class="badge badge-empty">—</span>`;
+  if (val === 'Concluído')   return `<span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span>`;
+  if (val === 'No Porto')    return `<span class="badge badge-porto"><span class="badge-dot" style="background:var(--accent2)"></span>No Porto</span>`;
+  if (val === 'Em andamento')return `<span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span>`;
+  return `<span class="badge badge-empty">${val}</span>`;
+}
+
+function relBadge(val) {
+  if (!val || val === '')      return `<span class="badge badge-empty">—</span>`;
+  if (val === 'Finalizado')    return `<span class="badge badge-rel-fin">Finalizado</span>`;
+  if (val === 'Enviado')       return `<span class="badge badge-rel-env">Enviado</span>`;
+  if (val === 'Solicitado')    return `<span class="badge badge-rel-sol">Solicitado</span>`;
+  if (val === 'Antigo')        return `<span class="badge badge-rel-ant">Antigo</span>`;
+  return `<span class="badge badge-empty">${val}</span>`;
+}
+
+function prontBadge(val) {
+  if (!val || val === '') return `<span class="prontidao-vazio">—</span>`;
+  if (val === 'Recebido')  return `<span class="prontidao-recebido">✔ Recebido</span>`;
+  if (val === 'Porto')     return `<span class="prontidao-porto">⚓ Porto</span>`;
+  if (val === 'Embarcada') return `<span class="prontidao-embarcada">🚢 Embarcada</span>`;
+  return `<span class="prontidao-data">${val}</span>`;
+}
+
+function amBadge(val) {
+  if (val === 'SIM') return `<span class="badge badge-sim">SIM</span>`;
+  return `<span style="color:var(--muted)">—</span>`;
+}
+
+function qty(v) {
+  return v ? v.toLocaleString('pt-BR') : '—';
+}
+
+function date(v) {
+  return v ? `<span class="td-date">${v}</span>` : `<span style="color:var(--muted)">—</span>`;
+}
+
+function buildColetadas(data) {
+  const tbody = document.getElementById('bodyColetadas');
+  tbody.innerHTML = '';
+  data.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.dataset.fornecedor = r.f;
+    tr.dataset.num = r.num;
+    tr.dataset.conc = r.conc;
+    tr.dataset.group = 'coletadas';
+    tr.innerHTML = `
+      <td class="td-fornecedor">${r.f}</td>
+      <td class="td-date">${r.sol}</td>
+      <td class="td-num">${r.num}</td>
+      <td class="td-qty">${qty(r.qty)}</td>
+      <td class="td-obs" title="${r.obs}">${r.obs}</td>
+      <td>${amBadge(r.am)}</td>
+      <td>${prontBadge(r.pront)}</td>
+      <td>${date(r.emb)}</td>
+      <td>${date(r.cheg)}</td>
+      <td>${statusBadge(r.conc)}</td>
+      <td>${relBadge(r.rel)}</td>
+      <td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">${r.embdef||'—'}</span></td>
+      <td>${date(r.prevdef)}</td>
+      <td>${r.defconc ? statusBadge(r.defconc) : '<span style="color:var(--muted)">—</span>'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function buildFalta(data) {
+  const tbody = document.getElementById('bodyFalta');
+  tbody.innerHTML = '';
+  data.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.dataset.fornecedor = r.f;
+    tr.dataset.num = r.num;
+    tr.dataset.conc = r.conc;
+    tr.dataset.group = 'falta';
+    tr.innerHTML = `
+      <td class="td-fornecedor">${r.f}</td>
+      <td class="td-date">${r.sol}</td>
+      <td class="td-num">${r.num}</td>
+      <td class="td-qty">${qty(r.qty)}</td>
+      <td class="td-obs" title="${r.obs}">${r.obs}</td>
+      <td>${amBadge(r.am)}</td>
+      <td>${r.pront ? `<span class="prontidao-data">${r.pront}</span>` : '<span class="prontidao-vazio">—</span>'}</td>
+      <td>${statusBadge(r.conc)}</td>
+      <td>${relBadge(r.rel)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function updateKPIs() {
+  const conc  = coletadas.filter(r => r.conc === 'Concluído').length;
+  const porto = coletadas.filter(r => r.conc === 'No Porto').length;
+  const and   = coletadas.filter(r => r.conc === 'Em andamento').length;
+  const totalQty = coletadas.reduce((s,r) => s + r.qty, 0);
+
+  document.getElementById('kpiTotal').textContent     = coletadas.length + faltam.length;
+  document.getElementById('kpiConcluido').textContent = conc;
+  document.getElementById('kpiPorto').textContent     = porto;
+  document.getElementById('kpiAndamento').textContent = and;
+  document.getElementById('kpiFalta').textContent     = faltam.length;
+  document.getElementById('kpiPecas').textContent     = totalQty.toLocaleString('pt-BR');
+}
+
+function populateFornecedores() {
+  const sel = document.getElementById('fornecedorFilter');
+  const all = [...new Set([...coletadas,...faltam].map(r=>r.f))].sort();
+  all.forEach(f => {
+    const o = document.createElement('option');
+    o.value = f; o.textContent = f;
+    sel.appendChild(o);
+  });
+}
+
+let currentStatus = 'all';
+let currentForn = '';
+let currentSearch = '';
+
+function applyFilters() {
+  const search = currentSearch.toLowerCase();
+
+  let filteredC = coletadas;
+  if (currentStatus !== 'all' && currentStatus !== 'falta') {
+    filteredC = coletadas.filter(r => r.conc === currentStatus);
+  } else if (currentStatus === 'falta') {
+    filteredC = [];
+  }
+  if (currentForn) filteredC = filteredC.filter(r => r.f === currentForn);
+  if (search) filteredC = filteredC.filter(r =>
+    r.f.toLowerCase().includes(search) ||
+    r.num.toLowerCase().includes(search) ||
+    r.obs.toLowerCase().includes(search)
+  );
+
+  let filteredF = faltam;
+  if (currentStatus !== 'all' && currentStatus !== 'falta') {
+    filteredF = [];
+  }
+  if (currentForn) filteredF = filteredF.filter(r => r.f === currentForn);
+  if (search) filteredF = filteredF.filter(r =>
+    r.f.toLowerCase().includes(search) ||
+    r.num.toLowerCase().includes(search) ||
+    r.obs.toLowerCase().includes(search)
+  );
+
+  buildColetadas(filteredC);
+  buildFalta(filteredF);
+
+  document.getElementById('countColetadas').textContent = `${filteredC.length} processo${filteredC.length !== 1 ? 's' : ''}`;
+  document.getElementById('countFalta').textContent = `${filteredF.length} processo${filteredF.length !== 1 ? 's' : ''}`;
+
+  document.getElementById('headerColetadas').style.display = filteredC.length ? '' : 'none';
+  document.getElementById('tabelaColetadas').closest('.table-wrap').style.display = filteredC.length ? '' : 'none';
+  document.getElementById('headerFalta').style.display = filteredF.length ? '' : 'none';
+  document.getElementById('tabelaFalta').closest('.table-wrap').style.display = filteredF.length ? '' : 'none';
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentStatus = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+document.getElementById('fornecedorFilter').addEventListener('change', e => {
+  currentForn = e.target.value;
+  applyFilters();
+});
+
+document.getElementById('searchBox').addEventListener('input', e => {
+  currentSearch = e.target.value;
+  applyFilters();
+});
+
+updateKPIs();
+populateFornecedores();
+buildColetadas(coletadas);
+buildFalta(faltam);
+document.getElementById('countColetadas').textContent = `${coletadas.length} processos`;
+document.getElementById('countFalta').textContent = `${faltam.length} processos`;
+</script>
+</body>
+</html>
