@@ -124,7 +124,29 @@
   .group-divider-line { flex: 1; height: 1px; background: var(--border); display: none; }
 
   /* TABLE */
-  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 2px; background: var(--surface); }
+  /* Scroll sincronizado */
+  .scroll-container {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: var(--surface);
+  }
+  .scroll-section {
+    min-width: max-content;
+  }
+  .scroll-section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    padding-bottom: 10px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    min-width: max-content;
+    background: var(--bg);
+    position: sticky;
+    left: 0;
+  }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
   thead th {
     background: var(--surface2);
@@ -221,33 +243,39 @@
 </div>
 
 <div class="main-content">
-  <div class="group-divider" id="headerColetadas">
-    <div class="group-divider-label">Coletadas</div>
-    <div class="group-divider-count" id="countColetadas"></div>
-  </div>
-  <div class="table-wrap">
-    <table id="tabelaColetadas">
-      <thead><tr>
-        <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
-        <th>Observações</th><th>Amostras</th><th>Prontidão</th><th>Embarque</th><th>Chegada</th>
-        <th>Conclusão</th><th>Rel. Defeito</th><th>Embarque Def.</th><th>Prev. Defeitos</th><th>Def. Concluído</th>
-      </tr></thead>
-      <tbody id="bodyColetadas"><tr><td colspan="14"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
-    </table>
-  </div>
+  <div class="scroll-container" id="scrollContainer">
+    <div class="scroll-section-divider" id="headerColetadas" style="margin-bottom:0;border-top:none">
+      <div class="group-divider-label">Coletadas</div>
+      <div class="group-divider-count" id="countColetadas"></div>
+    </div>
 
-  <div class="group-divider" id="headerFalta" style="margin-top:36px">
-    <div class="group-divider-label" style="color:var(--text2)">Faltam Coletar</div>
-    <div class="group-divider-count" id="countFalta"></div>
-  </div>
-  <div class="table-wrap">
-    <table id="tabelaFalta">
-      <thead><tr>
-        <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
-        <th>Observações</th><th>Amostras</th><th>Prontidão Inf.</th><th>Conclusão</th><th>Rel. Defeito</th>
-      </tr></thead>
-      <tbody id="bodyFalta"><tr><td colspan="9"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
-    </table>
+    <div class="scroll-section" id="sectionColetadas">
+      <table id="tabelaColetadas">
+        <thead><tr>
+          <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
+          <th>Observações</th><th>Prontidão</th><th>Embarque</th><th>Chegada</th>
+          <th>Conclusão</th><th>Rel. Defeito</th><th>Embarque Def.</th><th>Prev. Defeitos</th><th>Def. Concluído</th>
+        </tr></thead>
+        <tbody id="bodyColetadas"><tr><td colspan="13"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="scroll-section-divider" id="headerFalta" style="margin-top:36px">
+      <div class="group-divider-label" style="color:var(--text2)">Faltam Coletar</div>
+      <div class="group-divider-count" id="countFalta"></div>
+    </div>
+
+    <div class="scroll-section" id="sectionFalta">
+      <table id="tabelaFalta">
+        <thead><tr>
+          <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
+          <th>Observações</th><th>Prontidão</th><th>Embarque</th><th>Chegada</th>
+          <th>Conclusão</th><th>Rel. Defeito</th><th>Embarque Def.</th><th>Prev. Defeitos</th><th>Def. Concluído</th>
+        </tr></thead>
+        <tbody id="bodyFalta"><tr><td colspan="13"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
+      </table>
+    </div>
+
   </div>
 </div>
 
@@ -301,7 +329,7 @@ function date(v) { return v ? `<span class="td-date">${v}</span>` : `<span style
 
 function buildColetadas(data) {
   const tbody = document.getElementById('bodyColetadas');
-  if (!data.length) { tbody.innerHTML = `<tr><td colspan="14" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`; return; }
+  if (!data.length) { tbody.innerHTML = `<tr><td colspan="13" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`; return; }
   tbody.innerHTML = data.map(r => `
     <tr>
       <td class="td-fornecedor">${r.fornecedor||'—'}</td>
@@ -309,7 +337,6 @@ function buildColetadas(data) {
       <td class="td-num">${r.numerario||'—'}</td>
       <td class="td-qty">${qty(r.quantidade)}</td>
       <td class="td-obs" title="${r.observacoes||''}">${r.observacoes||'—'}</td>
-      <td>${amBadge(r.amostras)}</td>
       <td>${prontBadge(r.prontidao)}</td>
       <td>${date(r.embarque)}</td>
       <td>${date(r.chegada)}</td>
@@ -323,7 +350,7 @@ function buildColetadas(data) {
 
 function buildFalta(data) {
   const tbody = document.getElementById('bodyFalta');
-  if (!data.length) { tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`; return; }
+  if (!data.length) { tbody.innerHTML = `<tr><td colspan="13" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`; return; }
   tbody.innerHTML = data.map(r => `
     <tr>
       <td class="td-fornecedor">${r.fornecedor||'—'}</td>
@@ -331,10 +358,14 @@ function buildFalta(data) {
       <td class="td-num">${r.numerario||'—'}</td>
       <td class="td-qty">${qty(r.quantidade)}</td>
       <td class="td-obs" title="${r.observacoes||''}">${r.observacoes||'—'}</td>
-      <td>${amBadge(r.amostras)}</td>
       <td>${r.prontidao ? `<span class="prontidao-data">${r.prontidao}</span>` : '<span class="prontidao-vazio">—</span>'}</td>
+      <td>${date(r.embarque)}</td>
+      <td>${date(r.chegada)}</td>
       <td>${statusBadge(r.conclusao)}</td>
       <td>${relBadge(r.rel_defeito)}</td>
+      <td><span class="td-date">${r.embarque_def||'—'}</span></td>
+      <td>${date(r.prev_defeitos)}</td>
+      <td>${r.def_concluido ? statusBadge(r.def_concluido) : '<span style="color:var(--muted)">—</span>'}</td>
     </tr>`).join('');
 }
 
@@ -384,9 +415,9 @@ function applyFilters() {
   document.getElementById('countColetadas').textContent = `${filtC.length} processo${filtC.length!==1?'s':''}`;
   document.getElementById('countFalta').textContent = `${filtF.length} processo${filtF.length!==1?'s':''}`;
   document.getElementById('headerColetadas').style.display = filtC.length ? '' : 'none';
-  document.getElementById('tabelaColetadas').closest('.table-wrap').style.display = filtC.length ? '' : 'none';
+  document.getElementById('sectionColetadas').style.display = filtC.length ? '' : 'none';
   document.getElementById('headerFalta').style.display = filtF.length ? '' : 'none';
-  document.getElementById('tabelaFalta').closest('.table-wrap').style.display = filtF.length ? '' : 'none';
+  document.getElementById('sectionFalta').style.display = filtF.length ? '' : 'none';
 }
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -409,7 +440,7 @@ async function init() {
     populateFornecedores(allData);
     applyFilters();
   } catch(e) {
-    document.getElementById('bodyColetadas').innerHTML = `<tr><td colspan="14" style="text-align:center;padding:30px;color:var(--red);font-size:11px">Erro ao carregar dados: ${e.message}</td></tr>`;
+    document.getElementById('bodyColetadas').innerHTML = `<tr><td colspan="13" style="text-align:center;padding:30px;color:var(--red);font-size:11px">Erro ao carregar dados: ${e.message}</td></tr>`;
     document.getElementById('bodyFalta').innerHTML = '';
   }
 }
