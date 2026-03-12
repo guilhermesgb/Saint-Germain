@@ -1,97 +1,211 @@
 <!DOCTYPE html>
-<!-- saved from url=(0044)file:///C:/Users/PC01/Downloads/index_1.html -->
-<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Saint Germain — Solicitações de Estoque</title>
-<link href="./index_files/css2" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0c0f; --surface: #111318; --surface2: #181c22; --border: #1e242e;
-    --accent: #c8a45a; --accent2: #7eb8f0; --green: #4caf82; --red: #e05c5c;
-    --orange: #e0945c; --yellow: #d4c25a; --muted: #4a5568; --text: #e8eaf0; --text2: #8899aa;
+    --bg: #f5f5f3;
+    --surface: #ffffff;
+    --surface2: #f0f0ee;
+    --border: #e0e0de;
+    --border-strong: #c8c8c5;
+    --text: #111111;
+    --text2: #666660;
+    --text3: #999994;
+    --accent: #111111;
+    --green: #2d7a4f;
+    --green-bg: #edf5f0;
+    --green-border: #b8d9c7;
+    --blue: #1a4f7a;
+    --blue-bg: #edf2f7;
+    --blue-border: #b8ccdd;
+    --orange: #8a4a1a;
+    --orange-bg: #fdf3ec;
+    --orange-border: #ddc4a8;
+    --red: #7a1a1a;
+    --red-bg: #fdf0f0;
+    --red-border: #ddb8b8;
+    --muted: #aaaaaa;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; line-height: 1.5; min-height: 100vh; }
-  .header { background: linear-gradient(135deg, #0d1117 0%, #111822 100%); border-bottom: 1px solid var(--border); padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
-  .header-left { display: flex; align-items: baseline; gap: 16px; }
-  .logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--accent); text-shadow: 0 0 30px rgba(200,164,90,0.3); }
-  .subtitle { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); letter-spacing: 2px; text-transform: uppercase; }
-  .header-right { display: flex; align-items: center; gap: 20px; }
-  .live-badge { display: flex; align-items: center; gap: 6px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--green); letter-spacing: 1px; text-transform: uppercase; }
-  .live-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)} }
-  .filters-bar { padding: 14px 32px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .filter-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }
-  .filter-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text2); padding: 5px 14px; border-radius: 4px; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 11px; transition: all 0.15s; letter-spacing: 0.5px; }
-  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0a0c0f; font-weight: 600; }
-  .search-box { margin-left: auto; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 5px 12px; border-radius: 4px; font-family: 'DM Mono', monospace; font-size: 11px; width: 220px; outline: none; transition: border-color 0.15s; }
+  body { background: var(--bg); color: var(--text); font-family: 'Questrial', sans-serif; font-size: 13px; line-height: 1.5; min-height: 100vh; }
+
+  /* HEADER */
+  .header {
+    background: #111111;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-logo { display: flex; align-items: center; }
+  .header-logo svg { height: 26px; width: auto; display: block; }
+  .header-right { display: flex; align-items: center; gap: 24px; }
+  .header-subtitle { font-size: 10px; color: #666660; letter-spacing: 2px; text-transform: uppercase; }
+  .live-badge { display: flex; align-items: center; gap: 7px; font-size: 10px; color: #888882; letter-spacing: 1.5px; text-transform: uppercase; }
+  .live-dot { width: 5px; height: 5px; background: #4caf82; border-radius: 50%; animation: pulse 2.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+
+  /* KPI */
+  .kpi-grid { display: grid; grid-template-columns: repeat(6,1fr); border-bottom: 1px solid var(--border); }
+  .kpi-card { background: var(--surface); padding: 20px 24px; border-right: 1px solid var(--border); position: relative; }
+  .kpi-card:last-child { border-right: none; }
+  .kpi-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background: var(--kpi-color, transparent); }
+  .kpi-label { font-size: 9px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .kpi-value { font-size: 36px; color: var(--text); line-height: 1; }
+  .kpi-sub { font-size: 10px; color: var(--text3); margin-top: 5px; }
+
+  /* FILTERS */
+  .filters-bar {
+    padding: 12px 40px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .filter-label { font-size: 9px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-right: 4px; }
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 5px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Questrial', sans-serif;
+    font-size: 11px;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+  .filter-btn:hover { border-color: var(--text); color: var(--text); }
+  .filter-btn.active { background: var(--text); border-color: var(--text); color: #ffffff; }
+  .search-box {
+    margin-left: auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 5px 12px;
+    border-radius: 2px;
+    font-family: 'Questrial', sans-serif;
+    font-size: 11px;
+    width: 220px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
   .search-box::placeholder { color: var(--muted); }
-  .search-box:focus { border-color: var(--accent2); }
-  .kpi-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
-  .kpi-card { background: var(--surface); padding: 18px 20px; position: relative; overflow: hidden; }
-  .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--kpi-color,var(--accent)); }
-  .kpi-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text2); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
-  .kpi-value { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--kpi-color,var(--text)); letter-spacing: 1px; line-height: 1; }
-  .kpi-sub { font-size: 10px; color: var(--text2); margin-top: 4px; }
-  .main-content { padding: 24px 32px; }
-  .group-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0 10px; padding: 8px 14px; background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; }
-  .group-divider-label { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--accent); }
-  .group-divider-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); }
-  .table-wrap { overflow-x: auto; border-radius: 6px; border: 1px solid var(--border); }
+  .search-box:focus { border-color: var(--text); }
+  select#fornecedorFilter {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-family: 'Questrial', sans-serif;
+    font-size: 11px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  /* MAIN */
+  .main-content { padding: 28px 40px; }
+
+  .group-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 24px 0 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .group-divider-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text); font-weight: 400; }
+  .group-divider-count { font-size: 10px; color: var(--text3); letter-spacing: 1px; }
+  .group-divider-line { flex: 1; height: 1px; background: var(--border); display: none; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 2px; background: var(--surface); }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  thead th { background: var(--surface2); padding: 9px 12px; text-align: left; font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; color: var(--text2); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; border-bottom: 1px solid var(--border); }
+  thead th {
+    background: var(--surface2);
+    padding: 9px 14px;
+    text-align: left;
+    font-family: 'Questrial', sans-serif;
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--text3);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+  }
   tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
   tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: rgba(255,255,255,0.02); }
-  tbody td { padding: 9px 12px; color: var(--text); white-space: nowrap; vertical-align: middle; }
-  .td-num { font-family: 'DM Mono', monospace; color: var(--accent); font-size: 11px; }
-  .td-fornecedor { font-weight: 500; color: var(--accent2); }
-  .td-obs { max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text2); font-size: 11px; }
-  .td-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); }
-  .td-qty { font-family: 'DM Mono', monospace; font-size: 11px; text-align: right; color: var(--text); }
-  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; white-space: nowrap; }
-  .badge-dot { width: 5px; height: 5px; border-radius: 50%; }
-  .badge-concluido { background: rgba(76,175,130,0.12); color: var(--green); border: 1px solid rgba(76,175,130,0.25); }
-  .badge-porto { background: rgba(126,184,240,0.12); color: var(--accent2); border: 1px solid rgba(126,184,240,0.25); }
-  .badge-andamento { background: rgba(224,148,92,0.12); color: var(--orange); border: 1px solid rgba(224,148,92,0.25); }
-  .badge-empty { background: rgba(74,85,104,0.12); color: var(--muted); border: 1px solid rgba(74,85,104,0.25); }
-  .badge-rel-fin { background: rgba(76,175,130,0.12); color: var(--green); border: 1px solid rgba(76,175,130,0.25); }
-  .badge-rel-env { background: rgba(126,184,240,0.12); color: var(--accent2); border: 1px solid rgba(126,184,240,0.25); }
-  .badge-rel-sol { background: rgba(212,194,90,0.12); color: var(--yellow); border: 1px solid rgba(212,194,90,0.25); }
-  .badge-rel-ant { background: rgba(74,85,104,0.2); color: var(--muted); border: 1px solid rgba(74,85,104,0.3); }
-  .badge-sim { background: rgba(200,164,90,0.12); color: var(--accent); border: 1px solid rgba(200,164,90,0.25); }
-  .prontidao-recebido { color: var(--green); font-weight: 500; }
-  .prontidao-porto { color: var(--accent2); font-weight: 500; }
-  .prontidao-embarcada { color: var(--accent); font-weight: 500; }
-  .prontidao-data { color: var(--text2); }
-  .prontidao-vazio { color: var(--muted); }
-  .loading { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--text2); font-family: 'DM Mono', monospace; font-size: 12px; gap: 10px; }
-  .spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 9px 14px; color: var(--text); white-space: nowrap; vertical-align: middle; }
+
+  .td-num { font-size: 11px; color: var(--text); letter-spacing: 0.3px; }
+  .td-fornecedor { font-size: 12px; color: var(--text); letter-spacing: 0.2px; }
+  .td-solicita { font-size: 11px; color: var(--text2); letter-spacing: 0.3px; }
+  .td-obs { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text2); font-size: 11px; }
+  .td-date { font-size: 11px; color: var(--text2); }
+  .td-qty { font-size: 11px; text-align: right; color: var(--text); }
+
+  /* BADGES */
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 2px; font-size: 10px; white-space: nowrap; letter-spacing: 0.5px; }
+  .badge-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+
+  .badge-concluido { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .badge-porto     { background: var(--blue-bg);  color: var(--blue);  border: 1px solid var(--blue-border);  }
+  .badge-andamento { background: var(--orange-bg);color: var(--orange);border: 1px solid var(--orange-border);}
+  .badge-empty     { background: transparent; color: var(--muted); border: none; }
+  .badge-rel-fin   { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .badge-rel-env   { background: var(--blue-bg);  color: var(--blue);  border: 1px solid var(--blue-border);  }
+  .badge-rel-sol   { background: var(--orange-bg);color: var(--orange);border: 1px solid var(--orange-border);}
+  .badge-rel-ant   { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+  .badge-sim       { background: var(--surface2); color: var(--text);  border: 1px solid var(--border-strong); }
+
+  .prontidao-recebido { color: var(--green); }
+  .prontidao-porto    { color: var(--blue); }
+  .prontidao-embarcada{ color: var(--orange); }
+  .prontidao-data     { color: var(--text2); font-size: 11px; }
+  .prontidao-vazio    { color: var(--muted); }
+
+  /* LOADING */
+  .loading { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--text3); font-size: 11px; gap: 10px; letter-spacing: 1px; }
+  .spinner { width: 14px; height: 14px; border: 1px solid var(--border); border-top-color: var(--text); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(3,1fr); } .header,.main-content,.filters-bar { padding-left: 16px; padding-right: 16px; } }
+
+  /* FOOTER */
+  .footer { text-align: center; padding: 32px; font-size: 10px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid var(--border); margin-top: 40px; }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(3,1fr); }
+    .header, .main-content, .filters-bar { padding-left: 16px; padding-right: 16px; }
+  }
 </style>
 </head>
 <body>
 
 <header class="header">
-  <div class="header-left">
-    <div class="logo">SAINT GERMAIN</div>
-    <div class="subtitle">Solicitações de Estoque · Premier Trade</div>
+  <div class="header-logo">
+    <svg viewBox="0 0 620 42" xmlns="http://www.w3.org/2000/svg" aria-label="Saint Germain">
+      <text x="2" y="31" font-family="Questrial, Arial, sans-serif" font-size="26" fill="#ffffff" letter-spacing="12" font-weight="400">SAINT GERMAIN</text>
+    </svg>
   </div>
   <div class="header-right">
-    <div class="live-badge"><div class="live-dot"></div>Live · Supabase</div>
+    <div class="header-subtitle">Importações · Premier Trade</div>
+    <div class="live-badge"><div class="live-dot"></div>Live</div>
   </div>
 </header>
 
 <div class="kpi-grid">
-  <div class="kpi-card" style="--kpi-color:var(--text)"><div class="kpi-label">Total Processos</div><div class="kpi-value" id="kpiTotal">63</div><div class="kpi-sub">registros ativos</div></div>
-  <div class="kpi-card" style="--kpi-color:var(--green)"><div class="kpi-label">Concluídos</div><div class="kpi-value" id="kpiConcluido">46</div><div class="kpi-sub">coletados</div></div>
-  <div class="kpi-card" style="--kpi-color:var(--accent2)"><div class="kpi-label">No Porto</div><div class="kpi-value" id="kpiPorto">2</div><div class="kpi-sub">aguardando desembaraço</div></div>
-  <div class="kpi-card" style="--kpi-color:var(--orange)"><div class="kpi-label">Em Andamento</div><div class="kpi-value" id="kpiAndamento">6</div><div class="kpi-sub">em trânsito / embarque</div></div>
-  <div class="kpi-card" style="--kpi-color:var(--red)"><div class="kpi-label">Faltam Coletar</div><div class="kpi-value" id="kpiFalta">9</div><div class="kpi-sub">não coletados</div></div>
-  <div class="kpi-card" style="--kpi-color:var(--accent)"><div class="kpi-label">Total de Peças</div><div class="kpi-value" id="kpiPecas" style="font-size:22px">1.025.136</div><div class="kpi-sub">unidades (coletadas)</div></div>
+  <div class="kpi-card" style="--kpi-color:#111111"><div class="kpi-label">Total</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub">processos</div></div>
+  <div class="kpi-card" style="--kpi-color:#2d7a4f"><div class="kpi-label">Concluídos</div><div class="kpi-value" id="kpiConcluido">—</div><div class="kpi-sub">coletados</div></div>
+  <div class="kpi-card" style="--kpi-color:#1a4f7a"><div class="kpi-label">No Porto</div><div class="kpi-value" id="kpiPorto">—</div><div class="kpi-sub">desembaraço</div></div>
+  <div class="kpi-card" style="--kpi-color:#8a4a1a"><div class="kpi-label">Em Andamento</div><div class="kpi-value" id="kpiAndamento">—</div><div class="kpi-sub">em trânsito</div></div>
+  <div class="kpi-card" style="--kpi-color:#7a1a1a"><div class="kpi-label">Faltam</div><div class="kpi-value" id="kpiFalta">—</div><div class="kpi-sub">a coletar</div></div>
+  <div class="kpi-card" style="--kpi-color:#555550"><div class="kpi-label">Peças Coletadas</div><div class="kpi-value" id="kpiPecas" style="font-size:22px;padding-top:7px">—</div><div class="kpi-sub">unidades</div></div>
 </div>
 
 <div class="filters-bar">
@@ -101,1004 +215,43 @@
   <button class="filter-btn" data-filter="No Porto">No Porto</button>
   <button class="filter-btn" data-filter="Em andamento">Em andamento</button>
   <button class="filter-btn" data-filter="falta">Faltam Coletar</button>
-  <span class="filter-label" style="margin-left:16px">Fornecedor:</span>
-  <select id="fornecedorFilter" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:4px;font-family:&#39;DM Mono&#39;,monospace;font-size:11px;outline:none;cursor:pointer;"><option value="">Todos</option><option value="Alice">Alice</option><option value="Angela">Angela</option><option value="Aurora">Aurora</option><option value="Claire">Claire</option><option value="Emi">Emi</option><option value="Ivy/Sel">Ivy/Sel</option><option value="Jerry">Jerry</option><option value="Jorlin">Jorlin</option><option value="Lokesh">Lokesh</option><option value="Ricky">Ricky</option><option value="Yuki">Yuki</option></select>
-  <input type="text" class="search-box" id="searchBox" placeholder="🔍  Buscar processo, fornecedor...">
+  <span class="filter-label" style="margin-left:12px">Fornecedor:</span>
+  <select id="fornecedorFilter"><option value="">Todos</option></select>
+  <input type="text" class="search-box" id="searchBox" placeholder="Buscar processo, fornecedor...">
 </div>
 
 <div class="main-content">
   <div class="group-divider" id="headerColetadas">
-    <div class="group-divider-label">✔ Coletadas</div>
-    <div class="group-divider-count" id="countColetadas">54 processos</div>
+    <div class="group-divider-label">Coletadas</div>
+    <div class="group-divider-count" id="countColetadas"></div>
   </div>
   <div class="table-wrap">
     <table id="tabelaColetadas">
       <thead><tr>
-        <th>Fornecedor</th><th>Solicitação</th><th>Númerário</th><th style="text-align:right">Qtd Peças</th>
+        <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
         <th>Observações</th><th>Amostras</th><th>Prontidão</th><th>Embarque</th><th>Chegada</th>
         <th>Conclusão</th><th>Rel. Defeito</th><th>Embarque Def.</th><th>Prev. Defeitos</th><th>Def. Concluído</th>
       </tr></thead>
-      <tbody id="bodyColetadas">
-    <tr>
-      <td class="td-fornecedor">Alice</td>
-      <td class="td-date">19/11/2024</td>
-      <td class="td-num">SG.060/24</td>
-      <td class="td-qty">1.200</td>
-      <td class="td-obs" title="Estojos">Estojos</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">20/01/2025</span></td>
-      <td><span class="td-date">26/02/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-ant">Antigo</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">-</span></td>
-      <td><span class="td-date">-</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">04/12/2024</td>
-      <td class="td-num">SG.062/24</td>
-      <td class="td-qty">2.000</td>
-      <td class="td-obs" title="Flower box">Flower box</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">28/01/2025</span></td>
-      <td><span class="td-date">26/02/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-fin">Finalizado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.039A</span></td>
-      <td><span class="td-date">07/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">26/07/2024</td>
-      <td class="td-num">SG.038/24</td>
-      <td class="td-qty">17.260</td>
-      <td class="td-obs" title="New Jewerly">New Jewerly</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">28/01/2025</span></td>
-      <td><span class="td-date">26/02/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">14/08/2024</td>
-      <td class="td-num">SG.039/24</td>
-      <td class="td-qty">29.400</td>
-      <td class="td-obs" title="Invoice Corretiva (60.680pcs)">Invoice Corretiva (60.680pcs)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">28/01/2025</span></td>
-      <td><span class="td-date">26/02/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">28/08/2024</td>
-      <td class="td-num">SG.042/24</td>
-      <td class="td-qty">16.400</td>
-      <td class="td-obs" title="Men Jewerly">Men Jewerly</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">28/01/2025</span></td>
-      <td><span class="td-date">26/02/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Angela</td>
-      <td class="td-date">07/10/2024</td>
-      <td class="td-num">SG.048/24</td>
-      <td class="td-qty">300</td>
-      <td class="td-obs" title="Display&#39;s para Relógios">Display's para Relógios</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">30/01/2025</span></td>
-      <td><span class="td-date">10/03/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-ant">Antigo</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">-</span></td>
-      <td><span class="td-date">-</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Aurora</td>
-      <td class="td-date">24/10/2024</td>
-      <td class="td-num">SG.055/24</td>
-      <td class="td-qty">6.150</td>
-      <td class="td-obs" title="Xiamen Honsise Industrial">Xiamen Honsise Industrial</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">30/01/2025</span></td>
-      <td><span class="td-date">10/03/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.072</span></td>
-      <td><span class="td-date">05/02/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">14/08/2024</td>
-      <td class="td-num">SG.039/24</td>
-      <td class="td-qty">24.474</td>
-      <td class="td-obs" title="Invoice Corretiva (60.680pcs) - Falta 7k rel.">Invoice Corretiva (60.680pcs) - Falta 7k rel.</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">09/02/2025</span></td>
-      <td><span class="td-date">18/03/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-fin">Finalizado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.073B</span></td>
-      <td><span class="td-date">21/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Lokesh</td>
-      <td class="td-date">28/10/2024</td>
-      <td class="td-num">SG.056/24</td>
-      <td class="td-qty">3.500</td>
-      <td class="td-obs" title="BLM International Limited">BLM International Limited</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">09/02/2025</span></td>
-      <td><span class="td-date">22/03/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-fin">Finalizado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.070/71</span></td>
-      <td><span class="td-date">15/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">18/10/2024</td>
-      <td class="td-num">SG.052/24</td>
-      <td class="td-qty">14.500</td>
-      <td class="td-obs" title="Shenzhen Axgero Watch Co., Ltd">Shenzhen Axgero Watch Co., Ltd</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">19/02/2025</span></td>
-      <td><span class="td-date">24/03/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.096</span></td>
-      <td><span class="td-date">01/05/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">06/12/2024</td>
-      <td class="td-num">SG.063/24</td>
-      <td class="td-qty">20.000</td>
-      <td class="td-obs" title="Óculos de sol - jerry">Óculos de sol - jerry</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">14/02/2025</span></td>
-      <td><span class="td-date">28/03/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-fin">Finalizado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.064</span></td>
-      <td><span class="td-date">22/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Ricky</td>
-      <td class="td-date">22/11/2024</td>
-      <td class="td-num">SG.061/24</td>
-      <td class="td-qty">9.600</td>
-      <td class="td-obs" title="-">-</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">01/04/2025</span></td>
-      <td><span class="td-date">14/05/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-ant">Antigo</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">-</span></td>
-      <td><span class="td-date">-</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Ivy/Sel</td>
-      <td class="td-date">18/10/2024</td>
-      <td class="td-num">SG.051/24</td>
-      <td class="td-qty">7.150</td>
-      <td class="td-obs" title="GuangZhou Shisuo Limited">GuangZhou Shisuo Limited</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">15/04/2025</span></td>
-      <td><span class="td-date">19/05/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">-</span></td>
-      <td><span class="td-date">-</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jorlin</td>
-      <td class="td-date">24/10/2024</td>
-      <td class="td-num">SG.054/24</td>
-      <td class="td-qty">8.150</td>
-      <td class="td-obs" title="Yong Hong Watch and Clock Company">Yong Hong Watch and Clock Company</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">28/04/2025</span></td>
-      <td><span class="td-date">01/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.092</span></td>
-      <td><span class="td-date">28/02/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">18/11/2024</td>
-      <td class="td-num">SG.059/24</td>
-      <td class="td-qty">4.800</td>
-      <td class="td-obs" title="Pedido novo joias - Signos">Pedido novo joias - Signos</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">03/05/2025</span></td>
-      <td><span class="td-date">14/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">-</span></td>
-      <td><span class="td-date">-</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">20/02/2025</td>
-      <td class="td-num">SG.066/25</td>
-      <td class="td-qty">20.500</td>
-      <td class="td-obs" title="AX002">AX002</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">05/05/2025</span></td>
-      <td><span class="td-date">14/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.096</span></td>
-      <td><span class="td-date">01/05/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Claire</td>
-      <td class="td-date">18/10/2024</td>
-      <td class="td-num">SG.050/24</td>
-      <td class="td-qty">8.250</td>
-      <td class="td-obs" title="Yavis Group Co Limited">Yavis Group Co Limited</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">10/05/2025</span></td>
-      <td><span class="td-date">13/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-ant">Antigo</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">-</span></td>
-      <td><span class="td-date">-</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">13/02/2025</td>
-      <td class="td-num">SG.064/25</td>
-      <td class="td-qty">20.685</td>
-      <td class="td-obs" title="Modelos Clássicos + Capri + Siena (Inv. 005)">Modelos Clássicos + Capri + Siena (Inv. 005)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">22/05/2025</span></td>
-      <td><span class="td-date">24/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.099</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">20/02/2025</td>
-      <td class="td-num">SG.067/25</td>
-      <td class="td-qty">22.050</td>
-      <td class="td-obs" title="AX004">AX004</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">24/05/2025</span></td>
-      <td><span class="td-date">27/06/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.096</span></td>
-      <td><span class="td-date">01/05/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">03/09/2024</td>
-      <td class="td-num">SG.044/24</td>
-      <td class="td-qty">9.350</td>
-      <td class="td-obs" title="New Models Sunglasses (31.500pcs)">New Models Sunglasses (31.500pcs)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">17/06/2025</span></td>
-      <td><span class="td-date">25/07/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.099</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">30/09/2024</td>
-      <td class="td-num">SG.047/24</td>
-      <td class="td-qty">31.226</td>
-      <td class="td-obs" title="Segunda metade (66.820pcs)">Segunda metade (66.820pcs)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">23/06/2025</span></td>
-      <td><span class="td-date">26/07/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">FedEx</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">20/02/2025</td>
-      <td class="td-num">SG.067A/25</td>
-      <td class="td-qty">18.300</td>
-      <td class="td-obs" title="AX005">AX005</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">24/06/2025</span></td>
-      <td><span class="td-date">05/08/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.096</span></td>
-      <td><span class="td-date">01/05/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">25/02/2025</td>
-      <td class="td-num">SG.068/25</td>
-      <td class="td-qty">9.500</td>
-      <td class="td-obs" title="AX007 e AX003">AX007 e AX003</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">10/07/2025</span></td>
-      <td><span class="td-date">11/08/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.096</span></td>
-      <td><span class="td-date">01/05/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">13/02/2025</td>
-      <td class="td-num">SG.074/25</td>
-      <td class="td-qty">22.200</td>
-      <td class="td-obs" title="Invoice 010 - Aéreo">Invoice 010 - Aéreo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">03/09/2025</span></td>
-      <td><span class="td-date">12/09/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.099</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">18/11/2024</td>
-      <td class="td-num">SG.057/24</td>
-      <td class="td-qty">11.100</td>
-      <td class="td-obs" title="Pedido de modelos novos relógios">Pedido de modelos novos relógios</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">11/08/2025</span></td>
-      <td><span class="td-date">21/09/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">FedEx</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">05/08/2025</td>
-      <td class="td-num">SG.075/25</td>
-      <td class="td-qty">30.000</td>
-      <td class="td-obs" title="Invoice 011 - Aéreo">Invoice 011 - Aéreo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">25/09/2025</span></td>
-      <td><span class="td-date">05/10/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.099</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Aurora</td>
-      <td class="td-date">04/06/2025</td>
-      <td class="td-num">SG.072/25</td>
-      <td class="td-qty">26.000</td>
-      <td class="td-obs" title="HSW001650">HSW001650</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">25/08/2025</span></td>
-      <td><span class="td-date">18/10/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.077</span></td>
-      <td><span class="td-date">14/11/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Aurora</td>
-      <td class="td-date">08/08/2025</td>
-      <td class="td-num">SG.077/25</td>
-      <td class="td-qty">16.500</td>
-      <td class="td-obs" title="Invoice Aurora - 16.500pcs / HSW001651">Invoice Aurora - 16.500pcs / HSW001651</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">01/11/2025</span></td>
-      <td><span class="td-date">14/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">28/08/2025</td>
-      <td class="td-num">SG.079/25</td>
-      <td class="td-qty">20.400</td>
-      <td class="td-obs" title="Invoice Sunglasses 012">Invoice Sunglasses 012</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">03/11/2025</span></td>
-      <td><span class="td-date">14/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-sol">Solicitado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">04/06/2025</td>
-      <td class="td-num">SG.070/25</td>
-      <td class="td-qty">11.000</td>
-      <td class="td-obs" title="AX006 - 7.200 relógios e 3.800 braceletes">AX006 - 7.200 relógios e 3.800 braceletes</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">28/09/2025</span></td>
-      <td><span class="td-date">15/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">SG.096</span></td>
-      <td><span class="td-date">01/05/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">04/06/2025</td>
-      <td class="td-num">SG.073B/25</td>
-      <td class="td-qty">10.600</td>
-      <td class="td-obs" title="Processo SG.073 Aéreo">Processo SG.073 Aéreo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">07/11/2025</span></td>
-      <td><span class="td-date">17/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">FedEx</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">25/09/2025</td>
-      <td class="td-num">SG.082A/25</td>
-      <td class="td-qty">7.000</td>
-      <td class="td-obs" title="AX011 - Aéreo">AX011 - Aéreo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">16/11/2025</span></td>
-      <td><span class="td-date">24/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-fin">Finalizado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">-</span></td>
-      <td><span class="td-date">-</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Aurora</td>
-      <td class="td-date">29/09/2025</td>
-      <td class="td-num">SG.086A/25</td>
-      <td class="td-qty">15.000</td>
-      <td class="td-obs" title="INVOICE NO: HSW001681">INVOICE NO: HSW001681</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">24/11/2025</span></td>
-      <td><span class="td-date">28/11/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-sol">Solicitado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">08/08/2025</td>
-      <td class="td-num">SG.078/25</td>
-      <td class="td-qty">13.500</td>
-      <td class="td-obs" title="AX010">AX010</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">02/11/2025</span></td>
-      <td><span class="td-date">06/12/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-sol">Solicitado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">04/06/2025</td>
-      <td class="td-num">SG.073A/25</td>
-      <td class="td-qty">9.400</td>
-      <td class="td-obs" title="Processo SG.073 Marítimo">Processo SG.073 Marítimo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">02/11/2025</span></td>
-      <td><span class="td-date">07/12/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-sol">Solicitado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">26/09/2025</td>
-      <td class="td-num">SG.084/25</td>
-      <td class="td-qty">50.000</td>
-      <td class="td-obs" title="Invoice Sunglasses 013">Invoice Sunglasses 013</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">28/11/2025</span></td>
-      <td><span class="td-date">15/12/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-sol">Solicitado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">25/09/2025</td>
-      <td class="td-num">SG.082/25</td>
-      <td class="td-qty">19.000</td>
-      <td class="td-obs" title="PI 25035 / AX011 - Marítimo">PI 25035 / AX011 - Marítimo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">30/11/2025</span></td>
-      <td><span class="td-date">31/12/2025</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-sol">Solicitado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">30/10/2025</td>
-      <td class="td-num">SG.089/25</td>
-      <td class="td-qty">11.800</td>
-      <td class="td-obs" title="AX012 e AX013 - Aéreo">AX012 e AX013 - Aéreo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">16/01/2026</span></td>
-      <td><span class="td-date">22/01/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">26/09/2025</td>
-      <td class="td-num">SG.085/25</td>
-      <td class="td-qty">18.000</td>
-      <td class="td-obs" title="Invoice Sunglasses 014 e 015 - Aéreo">Invoice Sunglasses 014 e 015 - Aéreo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">23/01/2026</span></td>
-      <td><span class="td-date">30/01/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Aurora</td>
-      <td class="td-date">29/09/2025</td>
-      <td class="td-num">SG.086/25</td>
-      <td class="td-qty">15.000</td>
-      <td class="td-obs" title="INVOICE NO: HSW001681">INVOICE NO: HSW001681</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">20/12/2025</span></td>
-      <td><span class="td-date">31/01/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Emi</td>
-      <td class="td-date">08/08/2025</td>
-      <td class="td-num">SG.076/25</td>
-      <td class="td-qty">19.800</td>
-      <td class="td-obs" title="Invoice Emi - 19.800pcs">Invoice Emi - 19.800pcs</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">31/12/2025</span></td>
-      <td><span class="td-date">08/02/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">25/09/2025</td>
-      <td class="td-num">SG.083/25</td>
-      <td class="td-qty">10.000</td>
-      <td class="td-obs" title="PI 25036 - Invoice Sunglasses 001 Yuki">PI 25036 - Invoice Sunglasses 001 Yuki</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">30/12/2025</span></td>
-      <td><span class="td-date">10/02/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jorlin</td>
-      <td class="td-date">10/09/2025</td>
-      <td class="td-num">SG.080/25</td>
-      <td class="td-qty">20.960</td>
-      <td class="td-obs" title="Invoice J20250908">Invoice J20250908</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">31/12/2026</span></td>
-      <td><span class="td-date">11/02/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jorlin</td>
-      <td class="td-date">06/10/2025</td>
-      <td class="td-num">SG.087/25</td>
-      <td class="td-qty">10.200</td>
-      <td class="td-obs" title="Invoice Braceletes">Invoice Braceletes</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">31/12/2026</span></td>
-      <td><span class="td-date">11/02/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">08/12/2025</td>
-      <td class="td-num">SG.094A/25</td>
-      <td class="td-qty">10.300</td>
-      <td class="td-obs" title="PI 25057 - Invoice Sunglasses 002 Yuki (Aéreo)">PI 25057 - Invoice Sunglasses 002 Yuki (Aéreo)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">03/02/2026</span></td>
-      <td><span class="td-date">20/02/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-rel-env">Enviado</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jorlin</td>
-      <td class="td-date">05/12/2025</td>
-      <td class="td-num">SG.092A/25</td>
-      <td class="td-qty">14.900</td>
-      <td class="td-obs" title="Invoice J20251205 (Aéreo) + 17.000pcs veludo">Invoice J20251205 (Aéreo) + 17.000pcs veludo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-recebido">✔ Recebido</span></td>
-      <td><span class="td-date">09/02/2026</span></td>
-      <td><span class="td-date">18/02/2026</span></td>
-      <td><span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">08/12/2025</td>
-      <td class="td-num">SG.099A/25</td>
-      <td class="td-qty">41.557</td>
-      <td class="td-obs" title="Invoice Sunglasses 017 (AÉREO)">Invoice Sunglasses 017 (AÉREO)</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-porto">⚓ Porto</span></td>
-      <td><span class="td-date">18/02/2026</span></td>
-      <td><span class="td-date">04/03/2026</span></td>
-      <td><span class="badge badge-porto"><span class="badge-dot" style="background:var(--accent2)"></span>No Porto</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">30/10/2025</td>
-      <td class="td-num">SG.089/25</td>
-      <td class="td-qty">28.600</td>
-      <td class="td-obs" title="AX012 e AX013 - Marítimo">AX012 e AX013 - Marítimo</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-porto">⚓ Porto</span></td>
-      <td><span class="td-date">25/01/2026</span></td>
-      <td><span class="td-date">05/03/2026</span></td>
-      <td><span class="badge badge-porto"><span class="badge-dot" style="background:var(--accent2)"></span>No Porto</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">26/09/2025</td>
-      <td class="td-num">SG.085/25</td>
-      <td class="td-qty">45.024</td>
-      <td class="td-obs" title="Invoice Sunglasses 014 e 015 - Marítimo">Invoice Sunglasses 014 e 015 - Marítimo</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-embarcada">🚢 Embarcada</span></td>
-      <td><span class="td-date">28/01/2026</span></td>
-      <td><span class="td-date">12/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">08/12/2025</td>
-      <td class="td-num">SG.095/25</td>
-      <td class="td-qty">105.600</td>
-      <td class="td-obs" title="Invoice Sunglasses 016">Invoice Sunglasses 016</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-embarcada">🚢 Embarcada</span></td>
-      <td><span class="td-date">23/02/2026</span></td>
-      <td><span class="td-date">31/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">27/11/2025</td>
-      <td class="td-num">SG.091/25</td>
-      <td class="td-qty">10.200</td>
-      <td class="td-obs" title="AX014 - Coleção Nova">AX014 - Coleção Nova</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-embarcada">🚢 Embarcada</span></td>
-      <td><span class="td-date">23/02/2026</span></td>
-      <td><span class="td-date">30/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">23/12/2025</td>
-      <td class="td-num">SG.098A/25</td>
-      <td class="td-qty">57.000</td>
-      <td class="td-obs" title="AX017">AX017</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-embarcada">🚢 Embarcada</span></td>
-      <td><span class="td-date">23/02/2026</span></td>
-      <td><span class="td-date">31/03/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">08/12/2025</td>
-      <td class="td-num">SG.094/25</td>
-      <td class="td-qty">20.100</td>
-      <td class="td-obs" title="PI 25057 - Invoice Sunglasses 002 Yuki (Mar.)">PI 25057 - Invoice Sunglasses 002 Yuki (Mar.)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-embarcada">🚢 Embarcada</span></td>
-      <td><span class="td-date">12/02/2026</span></td>
-      <td><span class="td-date">01/04/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jorlin</td>
-      <td class="td-date">27/10/2025</td>
-      <td class="td-num">SG.088/25</td>
-      <td class="td-qty">19.650</td>
-      <td class="td-obs" title="Invoice 20251027 (Semijóias Lançamentos)">Invoice 20251027 (Semijóias Lançamentos)</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-embarcada">🚢 Embarcada</span></td>
-      <td><span class="td-date">26/02/2026</span></td>
-      <td><span class="td-date">15/04/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span style="color:var(--muted)">—</span></td>
-    </tr></tbody>
+      <tbody id="bodyColetadas"><tr><td colspan="14"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
     </table>
   </div>
 
-  <div class="group-divider" id="headerFalta" style="border-left-color:var(--red);margin-top:28px">
-    <div class="group-divider-label" style="color:var(--red)">⚠ Faltam Coletar</div>
-    <div class="group-divider-count" id="countFalta">9 processos</div>
+  <div class="group-divider" id="headerFalta" style="margin-top:36px">
+    <div class="group-divider-label" style="color:var(--text2)">Faltam Coletar</div>
+    <div class="group-divider-count" id="countFalta"></div>
   </div>
   <div class="table-wrap">
     <table id="tabelaFalta">
       <thead><tr>
-        <th>Fornecedor</th><th>Solicitação</th><th>Númerário</th><th style="text-align:right">Qtd Peças</th>
+        <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
         <th>Observações</th><th>Amostras</th><th>Prontidão Inf.</th><th>Conclusão</th><th>Rel. Defeito</th>
       </tr></thead>
-      <tbody id="bodyFalta">
-    <tr>
-      <td class="td-fornecedor">Jorlin</td>
-      <td class="td-date">27/10/2025</td>
-      <td class="td-num">SG.088/25</td>
-      <td class="td-qty">11.850</td>
-      <td class="td-obs" title="Invoice 20251027 (Semijóias Lançamentos)">Invoice 20251027 (Semijóias Lançamentos)</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-vazio">—</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">08/12/2025</td>
-      <td class="td-num">SG.099/25</td>
-      <td class="td-qty">8.443</td>
-      <td class="td-obs" title="Invoice Sunglasses 017 (SALDO APÓS CNY)">Invoice Sunglasses 017 (SALDO APÓS CNY)</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-data">09/02/2026</span></td>
-      <td><span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">23/12/2025</td>
-      <td class="td-num">SG.098/25</td>
-      <td class="td-qty">17.000</td>
-      <td class="td-obs" title="Saldo AX017 - Envio após CNY">Saldo AX017 - Envio após CNY</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-data">12/03/2026</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">04/03/2026</td>
-      <td class="td-num">SG.101/26</td>
-      <td class="td-qty">5.000</td>
-      <td class="td-obs" title="Invoice Sunglasses 019 - Modelo TikTok">Invoice Sunglasses 019 - Modelo TikTok</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-data">19/03/2026</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">23/12/2025</td>
-      <td class="td-num">SG.096/25</td>
-      <td class="td-qty">11.500</td>
-      <td class="td-obs" title="AX016">AX016</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-data">01/04/2026</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">23/12/2025</td>
-      <td class="td-num">SG.097/25</td>
-      <td class="td-qty">22.800</td>
-      <td class="td-obs" title="AX018">AX018</td>
-      <td><span class="badge badge-sim">SIM</span></td>
-      <td><span class="prontidao-data">15/04/2026</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">02/03/2026</td>
-      <td class="td-num">SG.100/26</td>
-      <td class="td-qty">83.000</td>
-      <td class="td-obs" title="AX019 (HG24, HBIG24 e S-ATGBIG22 ficarão prontos depois)">AX019 (HG24, HBIG24 e S-ATGBIG22 ficarão prontos depois)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-data">10/05/2026</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Jerry</td>
-      <td class="td-date">06/03/2026</td>
-      <td class="td-num">SG.102/26</td>
-      <td class="td-qty">158.400</td>
-      <td class="td-obs" title="Invoice Sunglasses 018">Invoice Sunglasses 018</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-vazio">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr>
-    <tr>
-      <td class="td-fornecedor">Yuki</td>
-      <td class="td-date">06/03/2026</td>
-      <td class="td-num">SG.103/26</td>
-      <td class="td-qty">115.900</td>
-      <td class="td-obs" title="Sunglasses 003 (Yuki)">Sunglasses 003 (Yuki)</td>
-      <td><span style="color:var(--muted)">—</span></td>
-      <td><span class="prontidao-vazio">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-      <td><span class="badge badge-empty">—</span></td>
-    </tr></tbody>
+      <tbody id="bodyFalta"><tr><td colspan="9"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
     </table>
   </div>
 </div>
+
+<div class="footer">Saint Germain · Controle de Importações · Premier Trade</div>
 
 <script>
 const SUPABASE_URL = 'https://cadgvbxxzlnqvpaxzuar.supabase.co';
@@ -1120,7 +273,7 @@ async function fetchData() {
 function statusBadge(val) {
   if (!val || val === '-' || val === '') return `<span class="badge badge-empty">—</span>`;
   if (val === 'Concluído')    return `<span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span>`;
-  if (val === 'No Porto')     return `<span class="badge badge-porto"><span class="badge-dot" style="background:var(--accent2)"></span>No Porto</span>`;
+  if (val === 'No Porto')     return `<span class="badge badge-porto"><span class="badge-dot" style="background:var(--blue)"></span>No Porto</span>`;
   if (val === 'Em andamento') return `<span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span>`;
   return `<span class="badge badge-empty">${val}</span>`;
 }
@@ -1136,7 +289,7 @@ function prontBadge(val) {
   if (!val || val === '') return `<span class="prontidao-vazio">—</span>`;
   if (val === 'Recebido')  return `<span class="prontidao-recebido">✔ Recebido</span>`;
   if (val === 'Porto')     return `<span class="prontidao-porto">⚓ Porto</span>`;
-  if (val === 'Embarcada') return `<span class="prontidao-embarcada">🚢 Embarcada</span>`;
+  if (val === 'Embarcada') return `<span class="prontidao-embarcada">→ Embarcada</span>`;
   return `<span class="prontidao-data">${val}</span>`;
 }
 function amBadge(val) {
@@ -1148,11 +301,11 @@ function date(v) { return v ? `<span class="td-date">${v}</span>` : `<span style
 
 function buildColetadas(data) {
   const tbody = document.getElementById('bodyColetadas');
-  if (!data.length) { tbody.innerHTML = `<tr><td colspan="14" style="text-align:center;padding:30px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px">Nenhum resultado</td></tr>`; return; }
+  if (!data.length) { tbody.innerHTML = `<tr><td colspan="14" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`; return; }
   tbody.innerHTML = data.map(r => `
     <tr>
       <td class="td-fornecedor">${r.fornecedor||'—'}</td>
-      <td class="td-date">${r.solicitacao||'—'}</td>
+      <td class="td-solicita">${r.solicitacao||'—'}</td>
       <td class="td-num">${r.numerario||'—'}</td>
       <td class="td-qty">${qty(r.quantidade)}</td>
       <td class="td-obs" title="${r.observacoes||''}">${r.observacoes||'—'}</td>
@@ -1162,7 +315,7 @@ function buildColetadas(data) {
       <td>${date(r.chegada)}</td>
       <td>${statusBadge(r.conclusao)}</td>
       <td>${relBadge(r.rel_defeito)}</td>
-      <td><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2)">${r.embarque_def||'—'}</span></td>
+      <td><span class="td-date">${r.embarque_def||'—'}</span></td>
       <td>${date(r.prev_defeitos)}</td>
       <td>${r.def_concluido ? statusBadge(r.def_concluido) : '<span style="color:var(--muted)">—</span>'}</td>
     </tr>`).join('');
@@ -1170,11 +323,11 @@ function buildColetadas(data) {
 
 function buildFalta(data) {
   const tbody = document.getElementById('bodyFalta');
-  if (!data.length) { tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px">Nenhum resultado</td></tr>`; return; }
+  if (!data.length) { tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`; return; }
   tbody.innerHTML = data.map(r => `
     <tr>
       <td class="td-fornecedor">${r.fornecedor||'—'}</td>
-      <td class="td-date">${r.solicitacao||'—'}</td>
+      <td class="td-solicita">${r.solicitacao||'—'}</td>
       <td class="td-num">${r.numerario||'—'}</td>
       <td class="td-qty">${qty(r.quantidade)}</td>
       <td class="td-obs" title="${r.observacoes||''}">${r.observacoes||'—'}</td>
@@ -1256,13 +409,12 @@ async function init() {
     populateFornecedores(allData);
     applyFilters();
   } catch(e) {
-    document.getElementById('bodyColetadas').innerHTML = `<tr><td colspan="14" style="text-align:center;padding:30px;color:var(--red);font-family:'DM Mono',monospace;font-size:11px">Erro ao carregar dados: ${e.message}</td></tr>`;
+    document.getElementById('bodyColetadas').innerHTML = `<tr><td colspan="14" style="text-align:center;padding:30px;color:var(--red);font-size:11px">Erro ao carregar dados: ${e.message}</td></tr>`;
     document.getElementById('bodyFalta').innerHTML = '';
   }
 }
 
 init();
 </script>
-
-
-</body></html>
+</body>
+</html>
