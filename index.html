@@ -227,7 +227,7 @@
   <div class="kpi-card" style="--kpi-color:#1a4f7a"><div class="kpi-label">No Porto</div><div class="kpi-value" id="kpiPorto">—</div><div class="kpi-sub">desembaraço</div></div>
   <div class="kpi-card" style="--kpi-color:#8a4a1a"><div class="kpi-label">Em Andamento</div><div class="kpi-value" id="kpiAndamento">—</div><div class="kpi-sub">em trânsito</div></div>
   <div class="kpi-card" style="--kpi-color:#7a1a1a"><div class="kpi-label">Faltam</div><div class="kpi-value" id="kpiFalta">—</div><div class="kpi-sub">a coletar</div></div>
-  <div class="kpi-card" style="--kpi-color:#555550"><div class="kpi-label">Peças Coletadas</div><div class="kpi-value" id="kpiPecas" style="font-size:22px;padding-top:7px">—</div><div class="kpi-sub">unidades</div></div>
+  <div class="kpi-card" style="--kpi-color:#555550"><div class="kpi-label">Estoque em Trânsito</div><div class="kpi-value" id="kpiPecas">—</div><div class="kpi-sub">peças ativas</div></div>
 </div>
 
 <div class="filters-bar">
@@ -358,7 +358,7 @@ function buildFalta(data) {
       <td class="td-num">${r.numerario||'—'}</td>
       <td class="td-qty">${qty(r.quantidade)}</td>
       <td class="td-obs" title="${r.observacoes||''}">${r.observacoes||'—'}</td>
-      <td>${r.prontidao ? `<span class="prontidao-data">${r.prontidao}</span>` : '<span class="prontidao-vazio">—</span>'}</td>
+      <td>${prontBadge(r.prontidao)}</td>
       <td>${date(r.embarque)}</td>
       <td>${date(r.chegada)}</td>
       <td>${statusBadge(r.conclusao)}</td>
@@ -373,7 +373,9 @@ function updateKPIs(coletadas, faltam) {
   const conc  = coletadas.filter(r => r.conclusao === 'Concluído').length;
   const porto = coletadas.filter(r => r.conclusao === 'No Porto').length;
   const and   = coletadas.filter(r => r.conclusao === 'Em andamento').length;
-  const total = coletadas.reduce((s,r) => s + (r.quantidade||0), 0);
+  const total = [...coletadas, ...faltam]
+    .filter(r => r.conclusao === 'Em andamento' || r.conclusao === 'No Porto')
+    .reduce((s,r) => s + (r.quantidade||0), 0);
   document.getElementById('kpiTotal').textContent     = coletadas.length + faltam.length;
   document.getElementById('kpiConcluido').textContent = conc;
   document.getElementById('kpiPorto').textContent     = porto;
@@ -403,7 +405,7 @@ function applyFilters() {
     (r.observacoes||'').toLowerCase().includes(search));
 
   let filtF = faltam;
-  if (currentStatus !== 'all' && currentStatus !== 'falta') filtF = [];
+  if (currentStatus !== 'all' && currentStatus !== 'falta') filtF = faltam.filter(r => r.conclusao === currentStatus);
   if (currentForn) filtF = filtF.filter(r => r.fornecedor === currentForn);
   if (search) filtF = filtF.filter(r =>
     (r.fornecedor||'').toLowerCase().includes(search) ||
