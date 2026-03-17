@@ -316,6 +316,7 @@ function relBadge(val) {
 function prontBadge(val) {
   if (!val || val === '') return `<span class="prontidao-vazio">—</span>`;
   if (val === 'Recebido')  return `<span class="prontidao-recebido">✔ Recebido</span>`;
+  if (val === 'No porto') return `<span class="prontidao-porto">⚓ No porto</span>`;
   if (val === 'Porto')     return `<span class="prontidao-porto">⚓ Porto</span>`;
   if (val === 'Embarcada') return `<span class="prontidao-embarcada">→ Embarcada</span>`;
   return `<span class="prontidao-data">${val}</span>`;
