@@ -302,7 +302,7 @@ function statusBadge(val) {
   if (!val || val === '-' || val === '') return `<span class="badge badge-empty">—</span>`;
   if (val === 'Concluído')    return `<span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span>`;
   if (val === 'No Porto')     return `<span class="badge badge-porto"><span class="badge-dot" style="background:var(--blue)"></span>No Porto</span>`;
-  if (val === 'Em andamento') return `<span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span>`;
+  if (val === 'Em andamento' || val === 'Embarcado' || val === 'Embarcada') return `<span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span>`;
   return `<span class="badge badge-empty">${val}</span>`;
 }
 function relBadge(val) {
@@ -398,7 +398,7 @@ function applyFilters() {
 
   let filtC = coletadas;
   if (currentStatus === 'falta') filtC = [];
-  else if (currentStatus !== 'all') filtC = coletadas.filter(r => r.conclusao === currentStatus);
+  else if (currentStatus !== 'all') filtC = coletadas.filter(r => { const c = r.conclusao; const norm = (c === 'Embarcado' || c === 'Embarcada') ? 'Em andamento' : c; return norm === currentStatus; });
   if (currentForn) filtC = filtC.filter(r => r.fornecedor === currentForn);
   if (search) filtC = filtC.filter(r =>
     (r.fornecedor||'').toLowerCase().includes(search) ||
@@ -406,7 +406,7 @@ function applyFilters() {
     (r.observacoes||'').toLowerCase().includes(search));
 
   let filtF = faltam;
-  if (currentStatus !== 'all' && currentStatus !== 'falta') filtF = faltam.filter(r => r.conclusao === currentStatus);
+  if (currentStatus !== 'all' && currentStatus !== 'falta') filtF = faltam.filter(r => { const c = r.conclusao; const norm = (c === 'Embarcado' || c === 'Embarcada') ? 'Em andamento' : c; return norm === currentStatus; });
   if (currentForn) filtF = filtF.filter(r => r.fornecedor === currentForn);
   if (search) filtF = filtF.filter(r =>
     (r.fornecedor||'').toLowerCase().includes(search) ||
