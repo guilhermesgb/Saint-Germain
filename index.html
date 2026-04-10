@@ -82,6 +82,7 @@ tbody td { padding: 9px 14px; color: var(--text); white-space: nowrap; vertical-
 .badge-sim { background: var(--surface2); color: var(--text); border: 1px solid var(--border-strong); }
 .prontidao-recebido { color: var(--green); }
 .prontidao-porto { color: var(--blue); }
+.prontidao-aeroporto{ color: var(--blue); }
 .prontidao-embarcada{ color: var(--orange); }
 .prontidao-data { color: var(--text2); font-size: 11px; }
 .prontidao-vazio { color: var(--muted); }
@@ -210,6 +211,7 @@ function prontBadge(val) {
   if (val === 'Recebido') return `<span class="prontidao-recebido">✔ Recebido</span>`;
   if (val === 'No porto') return `<span class="prontidao-porto">⚓ No porto</span>`;
   if (val === 'Porto') return `<span class="prontidao-porto">⚓ Porto</span>`;
+  if (val === 'No aeroporto') return `<span class="prontidao-aeroporto">✈ No aeroporto</span>`;
   if (val === 'Embarcada') return `<span class="prontidao-embarcada">→ Embarcada</span>`;
   return `<span class="prontidao-data">${val}</span>`;
 }
