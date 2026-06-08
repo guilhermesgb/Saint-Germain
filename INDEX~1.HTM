@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saint Germain — Solicitações de Estoque</title>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f5f3; --surface: #ffffff; --surface2: #f0f0ee;
+  --border: #e0e0de; --border-strong: #c8c8c5;
+  --text: #111111; --text2: #666660; --text3: #999994;
+  --accent: #111111;
+  --green: #2d7a4f; --green-bg: #edf5f0; --green-border: #b8d9c7;
+  --blue: #1a4f7a; --blue-bg: #edf2f7; --blue-border: #b8ccdd;
+  --orange: #8a4a1a; --orange-bg: #fdf3ec; --orange-border: #ddc4a8;
+  --red: #7a1a1a; --red-bg: #fdf0f0; --red-border: #ddb8b8;
+  --muted: #aaaaaa;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Questrial', sans-serif; font-size: 13px; line-height: 1.5; min-height: 100vh; }
+
+/* HEADER */
+.header { background: #111111; border-bottom: 1px solid #2a2a2a; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; height: 80px; position: sticky; top: 0; z-index: 100; }
+.header-logo { display: flex; align-items: center; }
+.header-logo svg { height: 26px; width: auto; display: block; }
+.header-right { display: flex; align-items: center; gap: 24px; }
+.header-subtitle { font-size: 10px; color: #666660; letter-spacing: 2px; text-transform: uppercase; }
+.live-badge { display: flex; align-items: center; gap: 7px; font-size: 10px; color: #888882; letter-spacing: 1.5px; text-transform: uppercase; }
+.live-dot { width: 5px; height: 5px; background: #4caf82; border-radius: 50%; animation: pulse 2.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+
+/* KPI */
+.kpi-grid { display: grid; grid-template-columns: repeat(8,1fr); border-bottom: 1px solid var(--border); }
+.kpi-card { background: var(--surface); padding: 20px 24px; border-right: 1px solid var(--border); position: relative; }
+.kpi-card:last-child { border-right: none; }
+.kpi-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background: var(--kpi-color, transparent); }
+.kpi-label { font-size: 9px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.kpi-value { font-size: 36px; color: var(--text); line-height: 1; }
+.kpi-sub { font-size: 10px; color: var(--text3); margin-top: 5px; }
+
+/* FILTERS */
+.filters-bar { padding: 12px 40px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.filter-label { font-size: 9px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-right: 4px; }
+.filter-btn { background: transparent; border: 1px solid var(--border); color: var(--text2); padding: 5px 14px; border-radius: 2px; cursor: pointer; font-family: 'Questrial', sans-serif; font-size: 11px; transition: all 0.15s; letter-spacing: 0.5px; }
+.filter-btn:hover { border-color: var(--text); color: var(--text); }
+.filter-btn.active { background: var(--text); border-color: var(--text); color: #ffffff; }
+.search-box { margin-left: auto; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 5px 12px; border-radius: 2px; font-family: 'Questrial', sans-serif; font-size: 11px; width: 220px; outline: none; transition: border-color 0.15s; }
+.search-box::placeholder { color: var(--muted); }
+.search-box:focus { border-color: var(--text); }
+select#fornecedorFilter { background: var(--bg); border: 1px solid var(--border); color: var(--text2); padding: 5px 10px; border-radius: 2px; font-family: 'Questrial', sans-serif; font-size: 11px; outline: none; cursor: pointer; }
+
+/* MAIN */
+.main-content { padding: 28px 40px; }
+.group-divider { display: flex; align-items: center; gap: 12px; margin: 24px 0 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.group-divider-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text); font-weight: 400; }
+.group-divider-count { font-size: 10px; color: var(--text3); letter-spacing: 1px; }
+.group-divider-line { flex: 1; height: 1px; background: var(--border); display: none; }
+
+/* TABLE */
+.scroll-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 2px; background: var(--surface); }
+.scroll-section { min-width: max-content; }
+.scroll-section-divider { display: flex; align-items: center; gap: 12px; padding: 10px 14px; padding-bottom: 10px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); min-width: max-content; background: var(--bg); position: sticky; left: 0; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead th { background: var(--surface2); padding: 9px 14px; text-align: left; font-family: 'Questrial', sans-serif; font-size: 9px; font-weight: 400; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; border-bottom: 1px solid var(--border); }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface2); }
+tbody td { padding: 9px 14px; color: var(--text); white-space: nowrap; vertical-align: middle; }
+.td-num { font-size: 11px; color: var(--text); letter-spacing: 0.3px; }
+.td-fornecedor { font-size: 12px; color: var(--text); letter-spacing: 0.2px; }
+.td-solicita { font-size: 11px; color: var(--text2); letter-spacing: 0.3px; }
+.td-obs { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text2); font-size: 11px; }
+.td-date { font-size: 11px; color: var(--text2); }
+.td-qty { font-size: 11px; text-align: right; color: var(--text); }
+.td-usd { font-size: 11px; text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+.td-usd-empty { color: var(--muted); }
+.td-docs { white-space: nowrap; }
+.td-lead { font-size: 11px; text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+.td-lead-fast { color: var(--green); font-weight: bold; }
+.td-lead-slow { color: var(--red); }
+
+/* DOC BUTTONS — abre PDFs do bucket Supabase Storage */
+.doc-btn { display: inline-block; padding: 3px 7px; margin-right: 3px; font-size: 9px; letter-spacing: 0.8px; border-radius: 2px; border: 1px solid transparent; text-decoration: none; font-family: 'Questrial', sans-serif; line-height: 1.3; }
+.doc-btn-enabled { background: var(--surface); color: var(--text); border-color: var(--border-strong); cursor: pointer; transition: all 0.15s; }
+.doc-btn-enabled:hover { background: var(--text); color: #ffffff; border-color: var(--text); }
+.doc-btn-disabled { background: transparent; color: var(--muted); border-color: var(--border); cursor: not-allowed; }
+
+/* BADGES */
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 2px; font-size: 10px; white-space: nowrap; letter-spacing: 0.5px; }
+.badge-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
+.badge-concluido { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.badge-porto { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.badge-andamento { background: var(--orange-bg);color: var(--orange);border: 1px solid var(--orange-border);}
+.badge-empty { background: transparent; color: var(--muted); border: none; }
+.badge-sim { background: var(--surface2); color: var(--text); border: 1px solid var(--border-strong); }
+.prontidao-recebido { color: var(--green); }
+.prontidao-porto    { color: var(--blue); }
+.prontidao-aeroporto{ color: var(--blue); }
+.prontidao-embarcada{ color: var(--orange); }
+.prontidao-data     { color: var(--text2); font-size: 11px; }
+.prontidao-vazio    { color: var(--muted); }
+
+/* AEREO COLUMNS — avaliação comercial (Lucas) sobre necessidade de trazer carga aérea */
+.aereo-select { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 3px 8px; border-radius: 2px; font-family: 'Questrial', sans-serif; font-size: 10px; letter-spacing: 0.5px; cursor: pointer; outline: none; transition: all 0.15s; min-width: 115px; }
+.aereo-select:hover { border-color: var(--text2); }
+.aereo-select:focus { border-color: var(--text); }
+.aereo-select.status-avaliando { background: var(--orange-bg); color: var(--orange); border-color: var(--orange-border); }
+.aereo-select.status-trazer { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-border); font-weight: bold; }
+.aereo-select.status-nao { background: var(--surface2); color: var(--text3); border-color: var(--border); }
+
+/* Badge read-only para coletadas (estado frozen pós-coleta) */
+.aereo-badge-frozen { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 2px; font-size: 10px; letter-spacing: 0.8px; font-weight: bold; background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); white-space: nowrap; }
+.aereo-badge-frozen::before { content: '✈'; font-size: 11px; }
+.aereo-qtd-readonly { font-size: 11px; color: var(--text); font-variant-numeric: tabular-nums; }
+.aereo-qtd-input { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 3px 6px; border-radius: 2px; font-family: 'Questrial', sans-serif; font-size: 11px; outline: none; width: 75px; text-align: right; transition: border-color 0.15s; }
+.aereo-qtd-input:focus { border-color: var(--text); }
+.aereo-qtd-input:disabled { background: var(--surface2); color: var(--muted); cursor: not-allowed; border-color: var(--border); }
+.aereo-qtd-input::-webkit-inner-spin-button, .aereo-qtd-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.aereo-saving { opacity: 0.5; pointer-events: none; }
+.aereo-saved { box-shadow: 0 0 0 2px var(--green); transition: box-shadow 0.3s; }
+.aereo-error { box-shadow: 0 0 0 2px var(--red); }
+
+/* LOADING */
+.loading { display: flex; align-items: center; justify-content: center; padding: 60px; color: var(--text3); font-size: 11px; gap: 10px; letter-spacing: 1px; }
+.spinner { width: 14px; height: 14px; border: 1px solid var(--border); border-top-color: var(--text); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* FOOTER */
+.footer { text-align: center; padding: 32px; font-size: 10px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid var(--border); margin-top: 40px; }
+
+@media (max-width: 900px) {
+  .kpi-grid { grid-template-columns: repeat(3,1fr); }
+  .header, .main-content, .filters-bar { padding-left: 16px; padding-right: 16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 620 42" xmlns="http://www.w3.org/2000/svg" aria-label="Saint Germain">
+      <text x="2" y="31" font-family="Questrial, Arial, sans-serif" font-size="26" fill="#ffffff" letter-spacing="12" font-weight="400">SAINT GERMAIN</text>
+    </svg>
+  </div>
+  <div class="header-right">
+    <div class="header-subtitle">Importações · Premier Trade</div>
+    <div class="live-badge"><div class="live-dot"></div>Live</div>
+  </div>
+</header>
+
+<div class="kpi-grid">
+  <div class="kpi-card" style="--kpi-color:#111111"><div class="kpi-label">Total</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub">processos</div></div>
+  <div class="kpi-card" style="--kpi-color:#2d7a4f"><div class="kpi-label">Concluídos</div><div class="kpi-value" id="kpiConcluido">—</div><div class="kpi-sub">coletados</div></div>
+  <div class="kpi-card" style="--kpi-color:#1a4f7a"><div class="kpi-label">No Porto</div><div class="kpi-value" id="kpiPorto">—</div><div class="kpi-sub">desembaraço</div></div>
+  <div class="kpi-card" style="--kpi-color:#8a4a1a"><div class="kpi-label">Em Andamento</div><div class="kpi-value" id="kpiAndamento">—</div><div class="kpi-sub">em trânsito</div></div>
+  <div class="kpi-card" style="--kpi-color:#7a1a1a"><div class="kpi-label">Faltam</div><div class="kpi-value" id="kpiFalta">—</div><div class="kpi-sub">a coletar</div></div>
+  <div class="kpi-card" style="--kpi-color:#555550"><div class="kpi-label">Estoque em Trânsito</div><div class="kpi-value" id="kpiPecas">—</div><div class="kpi-sub">peças ativas</div></div>
+  <div class="kpi-card" style="--kpi-color:#1a4f7a"><div class="kpi-label">LT Fornecedor</div><div class="kpi-value" id="kpiLtForn">—</div><div class="kpi-sub">média · dias</div></div>
+  <div class="kpi-card" style="--kpi-color:#8a4a1a"><div class="kpi-label">LT Pedido</div><div class="kpi-value" id="kpiLtPedido">—</div><div class="kpi-sub">média · dias</div></div>
+</div>
+
+<div class="filters-bar">
+  <span class="filter-label">Status:</span>
+  <button class="filter-btn active" data-filter="all">Todos</button>
+  <button class="filter-btn" data-filter="Concluído">Concluído</button>
+  <button class="filter-btn" data-filter="No Porto">No Porto</button>
+  <button class="filter-btn" data-filter="Em andamento">Em andamento</button>
+  <button class="filter-btn" data-filter="falta">Faltam Coletar</button>
+  <span class="filter-label" style="margin-left:12px">Fornecedor:</span>
+  <select id="fornecedorFilter"><option value="">Todos</option></select>
+  <input type="text" class="search-box" id="searchBox" placeholder="Buscar processo, fornecedor...">
+</div>
+
+<div class="main-content">
+  <div class="scroll-container" id="scrollContainer">
+
+    <div class="scroll-section-divider" id="headerColetadas" style="margin-bottom:0;border-top:none">
+      <div class="group-divider-label">Coletadas</div>
+      <div class="group-divider-count" id="countColetadas"></div>
+    </div>
+    <div class="scroll-section" id="sectionColetadas">
+      <table id="tabelaColetadas">
+        <thead><tr>
+          <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
+          <th>Observações</th><th>Prontidão</th><th>Embarque</th><th>Chegada</th>
+          <th style="text-align:right" title="Lead time do fornecedor: dias entre a solicitação (SWIFT de entrada) e a prontidão da carga. Ideal 30–60 dias.">LT Fornecedor</th>
+          <th style="text-align:right" title="Lead time do pedido: dias entre a solicitação e a entrega no escritório SG (ciclo porta a porta completo).">LT Pedido</th>
+          <th>Entrega</th>
+          <th>Conclusão</th>
+          <th>Necessidade Aéreo</th><th style="text-align:right">Qtd Aéreo</th>
+          <th style="text-align:right">Entrada $</th><th style="text-align:right">Saldo $</th>
+          <th>Documentos</th>
+        </tr></thead>
+        <tbody id="bodyColetadas"><tr><td colspan="17"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="scroll-section-divider" id="headerFalta" style="margin-top:36px">
+      <div class="group-divider-label" style="color:var(--text2)">Faltam Coletar</div>
+      <div class="group-divider-count" id="countFalta"></div>
+    </div>
+    <div class="scroll-section" id="sectionFalta">
+      <table id="tabelaFalta">
+        <thead><tr>
+          <th>Fornecedor</th><th>Solicitação</th><th>Processo</th><th style="text-align:right">Qtd Peças</th>
+          <th>Observações</th><th>Prontidão</th><th>Embarque</th><th>Chegada</th>
+          <th style="text-align:right" title="Lead time do fornecedor: dias entre a solicitação (SWIFT de entrada) e a prontidão da carga. Ideal 30–60 dias.">LT Fornecedor</th>
+          <th style="text-align:right" title="Lead time do pedido: dias entre a solicitação e a entrega no escritório SG (ciclo porta a porta completo).">LT Pedido</th>
+          <th>Entrega</th>
+          <th>Conclusão</th>
+          <th>Necessidade Aéreo</th><th style="text-align:right">Qtd Aéreo</th>
+          <th style="text-align:right">Entrada $</th><th style="text-align:right">Saldo $</th>
+          <th>Documentos</th>
+        </tr></thead>
+        <tbody id="bodyFalta"><tr><td colspan="17"><div class="loading"><div class="spinner"></div>Carregando...</div></td></tr></tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">Saint Germain · Controle de Importações · Premier Trade</div>
+
+<script>
+const SUPABASE_URL = 'https://cadgvbxxzlnqvpaxzuar.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_qTtOFs7PfAtoZDJeBs6yzg_FreGfqsp';
+
+let allData = [];
+let currentStatus = 'all';
+let currentForn = '';
+let currentSearch = '';
+
+async function fetchData() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/processos?select=*&order=ordem.asc&limit=1000`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  if (!res.ok) throw new Error(`Erro ${res.status}`);
+  return res.json();
+}
+
+async function updateProcesso(id, updates) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/processos?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(updates)
+  });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`HTTP ${res.status}: ${txt}`);
+  }
+}
+
+function statusBadge(val) {
+  if (!val || val === '-' || val === '') return `<span class="badge badge-empty">—</span>`;
+  if (val === 'Concluído') return `<span class="badge badge-concluido"><span class="badge-dot" style="background:var(--green)"></span>Concluído</span>`;
+  if (val === 'No Porto')  return `<span class="badge badge-porto"><span class="badge-dot" style="background:var(--blue)"></span>No Porto</span>`;
+  if (val === 'Em andamento' || val === 'Embarcado' || val === 'Embarcada') return `<span class="badge badge-andamento"><span class="badge-dot" style="background:var(--orange)"></span>Em andamento</span>`;
+  return `<span class="badge badge-empty">${val}</span>`;
+}
+
+function prontBadge(val) {
+  if (!val || val === '') return `<span class="prontidao-vazio">—</span>`;
+  if (val === 'Recebido')      return `<span class="prontidao-recebido">✔ Recebido</span>`;
+  if (val === 'No porto')      return `<span class="prontidao-porto">⚓ No porto</span>`;
+  if (val === 'Porto')         return `<span class="prontidao-porto">⚓ Porto</span>`;
+  if (val === 'No aeroporto')  return `<span class="prontidao-aeroporto">✈ No aeroporto</span>`;
+  if (val === 'Embarcada')     return `<span class="prontidao-embarcada">→ Embarcada</span>`;
+  return `<span class="prontidao-data">${val}</span>`;
+}
+
+function qty(v) { return v ? Number(v).toLocaleString('pt-BR') : '—'; }
+function date(v) { return v ? `<span class="td-date">${v}</span>` : `<span style="color:var(--muted)">—</span>`; }
+
+/* Lead time do PEDIDO (porta a porta) em dias. Verde se ≤90d (rápido), vermelho se ≥180d (lento). */
+function leadTime(v) {
+  if (v == null || v === '') return `<span style="color:var(--muted)">—</span>`;
+  const n = Number(v);
+  if (!isFinite(n)) return `<span style="color:var(--muted)">—</span>`;
+  let cls = 'td-lead';
+  if (n <= 90) cls += ' td-lead-fast';
+  else if (n >= 180) cls += ' td-lead-slow';
+  return `<span class="${cls}">${n}d</span>`;
+}
+
+/* Lead time do FORNECEDOR (solicitação → prontidão). Ideal 30–60d: verde se ≤60d, vermelho se ≥90d. */
+function leadTimeForn(v) {
+  if (v == null || v === '') return `<span style="color:var(--muted)">—</span>`;
+  const n = Number(v);
+  if (!isFinite(n)) return `<span style="color:var(--muted)">—</span>`;
+  let cls = 'td-lead';
+  if (n <= 60) cls += ' td-lead-fast';
+  else if (n >= 90) cls += ' td-lead-slow';
+  return `<span class="${cls}">${n}d</span>`;
+}
+
+/* Formata valor numérico USD vindo do Supabase (numeric). Mostra "—" se null. */
+function usd(v) {
+  if (v == null || v === '') return `<span class="td-usd-empty">—</span>`;
+  const n = Number(v);
+  if (!isFinite(n)) return `<span class="td-usd-empty">—</span>`;
+  return `US$ ${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+/* Botão de documento. Se URL existe, abre em nova aba; se null, fica desabilitado. */
+function docButton(url, label, title) {
+  if (!url) return `<span class="doc-btn doc-btn-disabled" title="${title} — não disponível">${label}</span>`;
+  return `<a href="${url}" target="_blank" rel="noopener" class="doc-btn doc-btn-enabled" title="${title}">${label}</a>`;
+}
+
+function docsCell(r) {
+  return `
+    ${docButton(r.invoice_url,        'INV', 'Invoice')}
+    ${docButton(r.packing_list_url,   'PL',  'Packing List')}
+    ${docButton(r.swift_entrada_url,  'SE',  'SWIFT Entrada')}
+    ${docButton(r.swift_saldo_url,    'SS',  'SWIFT Saldo')}
+    ${docButton(r.danfe_url,          'DAN', 'DANFE')}
+  `;
+}
+
+function aereoStatusClass(status) {
+  if (status === 'Avaliando') return 'status-avaliando';
+  if (status === 'Trazer aéreo') return 'status-trazer';
+  if (status === 'Não necessário') return 'status-nao';
+  return '';
+}
+
+function aereoStatusCell(r) {
+  // COLETADAS: estado frozen pós-coleta, read-only
+  if (r.grupo === 'coletadas') {
+    if (r.aereo_status === 'Aéreo') return `<span class="aereo-badge-frozen">Aéreo</span>`;
+    return `<span style="color:var(--muted)">—</span>`;
+  }
+  // FALTAM: editável (planejamento). Default = 'Avaliando' (nunca NULL).
+  const cur = r.aereo_status || 'Avaliando';
+  const cls = aereoStatusClass(cur);
+  const opt = (v, lbl) => `<option value="${v}"${cur===v?' selected':''}>${lbl}</option>`;
+  return `<select class="aereo-field aereo-select ${cls}" data-id="${r.id}" data-field="aereo_status">
+    ${opt('Avaliando','Avaliando')}${opt('Trazer aéreo','Trazer aéreo')}${opt('Não necessário','Não necessário')}
+  </select>`;
+}
+
+function aereoQtdCell(r) {
+  // COLETADAS: read-only — mostra qtd se aéreo, senão "—"
+  if (r.grupo === 'coletadas') {
+    if (r.aereo_status === 'Aéreo' && r.aereo_qtd != null) {
+      return `<span class="aereo-qtd-readonly">${qty(r.aereo_qtd)}</span>`;
+    }
+    return `<span style="color:var(--muted)">—</span>`;
+  }
+  // FALTAM: editável (input number)
+  if (r.conclusao !== 'Em andamento') return '<span style="color:var(--muted)">—</span>';
+  const enabled = r.aereo_status === 'Trazer aéreo';
+  const val = (r.aereo_qtd ?? '') === null ? '' : (r.aereo_qtd ?? '');
+  const maxV = r.quantidade || '';
+  return `<input type="number" class="aereo-field aereo-qtd-input" data-id="${r.id}" data-field="aereo_qtd" value="${val}" min="0"${maxV?` max="${maxV}"`:''} placeholder="${enabled?'qtd':'—'}"${enabled?'':' disabled'}>`;
+}
+
+function renderRow(r) {
+  return `
+    <tr data-id="${r.id}">
+      <td class="td-fornecedor">${r.fornecedor||'—'}</td>
+      <td class="td-solicita">${r.solicitacao||'—'}</td>
+      <td class="td-num">${r.numerario||'—'}</td>
+      <td class="td-qty">${qty(r.quantidade)}</td>
+      <td class="td-obs" title="${(r.observacoes||'').replace(/"/g,'&quot;')}">${r.observacoes||'—'}</td>
+      <td>${prontBadge(r.prontidao)}</td>
+      <td>${date(r.embarque)}</td>
+      <td>${date(r.chegada)}</td>
+      <td style="text-align:right">${leadTimeForn(r.lead_time_fornecedor_dias)}</td>
+      <td style="text-align:right">${leadTime(r.lead_time_processo_dias)}</td>
+      <td>${date(r.entrega)}</td>
+      <td>${statusBadge(r.conclusao)}</td>
+      <td>${aereoStatusCell(r)}</td>
+      <td style="text-align:right">${aereoQtdCell(r)}</td>
+      <td class="td-usd">${usd(r.entrada_usd)}</td>
+      <td class="td-usd">${usd(r.saldo_usd)}</td>
+      <td class="td-docs">${docsCell(r)}</td>
+    </tr>`;
+}
+
+function buildColetadas(data) {
+  const tbody = document.getElementById('bodyColetadas');
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(renderRow).join('');
+}
+
+function buildFalta(data) {
+  const tbody = document.getElementById('bodyFalta');
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="17" style="text-align:center;padding:30px;color:var(--muted);font-size:11px;letter-spacing:1px">Nenhum resultado</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(renderRow).join('');
+}
+
+function updateKPIs(coletadas, faltam) {
+  const conc = coletadas.filter(r => r.conclusao === 'Concluído').length;
+  const porto = coletadas.filter(r => r.conclusao === 'No Porto').length;
+  const and = coletadas.filter(r => r.conclusao === 'Em andamento').length;
+  const total = [...coletadas, ...faltam]
+    .filter(r => r.conclusao === 'Em andamento' || r.conclusao === 'No Porto')
+    .reduce((s,r) => s + (r.quantidade||0), 0);
+  document.getElementById('kpiTotal').textContent = coletadas.length + faltam.length;
+  document.getElementById('kpiConcluido').textContent = conc;
+  document.getElementById('kpiPorto').textContent = porto;
+  document.getElementById('kpiAndamento').textContent = and;
+  document.getElementById('kpiFalta').textContent = faltam.length;
+  document.getElementById('kpiPecas').textContent = total.toLocaleString('pt-BR');
+
+  // Médias de lead time (apenas registros com valor calculado)
+  const all = [...coletadas, ...faltam];
+  const nums = field => all.map(r => r[field]).filter(v => v != null && v !== '').map(Number).filter(isFinite);
+  const avg = a => a.length ? Math.round(a.reduce((s,x) => s + x, 0) / a.length) : null;
+  const aF = avg(nums('lead_time_fornecedor_dias'));
+  const aP = avg(nums('lead_time_processo_dias'));
+  document.getElementById('kpiLtForn').textContent = aF == null ? '—' : `${aF}d`;
+  document.getElementById('kpiLtPedido').textContent = aP == null ? '—' : `${aP}d`;
+}
+
+function populateFornecedores(data) {
+  const sel = document.getElementById('fornecedorFilter');
+  const all = [...new Set(data.map(r=>r.fornecedor).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">Todos</option>' + all.map(f=>`<option value="${f}">${f}</option>`).join('');
+}
+
+function applyFilters() {
+  const search = currentSearch.toLowerCase();
+  const coletadas = allData.filter(r => r.grupo === 'coletadas');
+  const faltam = allData.filter(r => r.grupo === 'faltam');
+
+  let filtC = coletadas;
+  if (currentStatus === 'falta') filtC = [];
+  else if (currentStatus !== 'all') filtC = coletadas.filter(r => {
+    const c = r.conclusao;
+    const norm = (c === 'Embarcado' || c === 'Embarcada') ? 'Em andamento' : c;
+    return norm === currentStatus;
+  });
+  if (currentForn) filtC = filtC.filter(r => r.fornecedor === currentForn);
+  if (search) filtC = filtC.filter(r =>
+    (r.fornecedor||'').toLowerCase().includes(search) ||
+    (r.numerario||'').toLowerCase().includes(search) ||
+    (r.observacoes||'').toLowerCase().includes(search));
+
+  let filtF = faltam;
+  if (currentStatus !== 'all' && currentStatus !== 'falta') filtF = faltam.filter(r => {
+    const c = r.conclusao;
+    const norm = (c === 'Embarcado' || c === 'Embarcada') ? 'Em andamento' : c;
+    return norm === currentStatus;
+  });
+  if (currentForn) filtF = filtF.filter(r => r.fornecedor === currentForn);
+  if (search) filtF = filtF.filter(r =>
+    (r.fornecedor||'').toLowerCase().includes(search) ||
+    (r.numerario||'').toLowerCase().includes(search) ||
+    (r.observacoes||'').toLowerCase().includes(search));
+
+  buildColetadas(filtC);
+  buildFalta(filtF);
+  document.getElementById('countColetadas').textContent = `${filtC.length} processo${filtC.length!==1?'s':''}`;
+  document.getElementById('countFalta').textContent = `${filtF.length} processo${filtF.length!==1?'s':''}`;
+  document.getElementById('headerColetadas').style.display = filtC.length ? '' : 'none';
+  document.getElementById('sectionColetadas').style.display = filtC.length ? '' : 'none';
+  document.getElementById('headerFalta').style.display = filtF.length ? '' : 'none';
+  document.getElementById('sectionFalta').style.display = filtF.length ? '' : 'none';
+}
+
+async function handleAereoChange(e) {
+  const el = e.target;
+  if (!el.classList.contains('aereo-field')) return;
+  const id = Number(el.dataset.id);
+  const field = el.dataset.field;
+  let value = el.value;
+  if (field === 'aereo_qtd') value = value === '' ? null : Number(value);
+  if (field === 'aereo_status' && value === '') value = null;
+
+  el.classList.add('aereo-saving');
+  el.classList.remove('aereo-saved', 'aereo-error');
+
+  const updates = { [field]: value };
+  // Se mudar status para algo diferente de 'Trazer aéreo', zera aereo_qtd
+  if (field === 'aereo_status' && value !== 'Trazer aéreo') {
+    updates.aereo_qtd = null;
+  }
+
+  try {
+    await updateProcesso(id, updates);
+    const rec = allData.find(r => r.id === id);
+    if (rec) Object.assign(rec, updates);
+    el.classList.remove('aereo-saving');
+    el.classList.add('aereo-saved');
+    setTimeout(() => el.classList.remove('aereo-saved'), 1200);
+    // Se o status mudou, re-renderiza para atualizar o estado do input qtd e o destaque da linha
+    if (field === 'aereo_status') applyFilters();
+  } catch(err) {
+    el.classList.remove('aereo-saving');
+    el.classList.add('aereo-error');
+    console.error('Erro ao salvar aéreo:', err);
+    alert(`Erro ao salvar alteração: ${err.message}\n\nVerifique as políticas de RLS do Supabase para permitir UPDATE com a chave publishable.`);
+  }
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentStatus = btn.dataset.filter;
+    applyFilters();
+  });
+});
+document.getElementById('fornecedorFilter').addEventListener('change', e => { currentForn = e.target.value; applyFilters(); });
+document.getElementById('searchBox').addEventListener('input', e => { currentSearch = e.target.value; applyFilters(); });
+
+// Delegação para capturar mudanças nos dropdowns/inputs aéreo em ambas as tabelas
+document.getElementById('bodyColetadas').addEventListener('change', handleAereoChange);
+document.getElementById('bodyFalta').addEventListener('change', handleAereoChange);
+
+async function init() {
+  try {
+    allData = await fetchData();
+    const coletadas = allData.filter(r => r.grupo === 'coletadas');
+    const faltam = allData.filter(r => r.grupo === 'faltam');
+    updateKPIs(coletadas, faltam);
+    populateFornecedores(allData);
+    applyFilters();
+  } catch(e) {
+    document.getElementById('bodyColetadas').innerHTML = `<tr><td colspan="17" style="text-align:center;padding:30px;color:var(--red);font-size:11px">Erro ao carregar dados: ${e.message}</td></tr>`;
+    document.getElementById('bodyFalta').innerHTML = '';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
